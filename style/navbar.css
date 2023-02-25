@@ -1,0 +1,44 @@
+.navbar-custom {
+    letter-spacing: 3px;
+}
+
+.image-background-div {
+    height: 100vh;
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/background_mountains_sun.JPG');
+    background-size: cover;
+    color: rgba(255,255,255,0.7);
+}
+
+.header-border {
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 5px;
+    padding: 35px;
+}
+
+.header {
+    letter-spacing: 2px;
+}
+
+.header-description {
+    letter-spacing: 3px;
+}
+
+.nav-link{
+    margin-left: 15px;
+}
+
+#about-me-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 15px;
+    font-weight: 500;
+    padding: 12px 100px;
+}
+
+#about-me-button:hover {
+    background-color: black;
+    border-color: black;
+}
+
+
