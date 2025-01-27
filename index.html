@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -44,20 +45,57 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
-        <div class="container">
+        <div id="particles-js"></div>
+        <div class="container position-relative">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h1>Fullstack Software Developer</h1>
-                    <p class="lead">Crafting Enterprise-Grade Solutions with Modern Technologies</p>
-                    <div class="d-flex gap-3 flex-column flex-sm-row">
-                        <a href="https://www.linkedin.com/in/clemens-martinek-958212332/" target="_blank" class="btn btn-primary">
-                            <i class="bi bi-linkedin me-2"></i>LinkedIn
-                        </a>
+                    <div class="animate-text">
+                        <span class="badge-custom">Available for Work</span>
+                        <h1 class="display-3">Fullstack Software Developer</h1>
+                        <p class="lead">Crafting Enterprise-Grade Solutions with Modern Technologies</p>
+                        <div class="d-flex gap-3 flex-column flex-sm-row">
+                            <a href="https://www.linkedin.com/in/clemens-martinek-958212332/" target="_blank" class="btn btn-primary btn-hover-float">
+                                <i class="bi bi-linkedin me-2"></i>LinkedIn
+                            </a>
+                            <a href="#contact" class="btn btn-outline-primary btn-hover-float">
+                                <i class="bi bi-envelope-fill me-2"></i>Contact Me
+                            </a>
+                        </div>
+                        <div class="tech-stack">
+                            <span>Tech Stack</span>
+                            <div class="tech-icons">
+                                <i class="bi bi-filetype-cs" title="C#"></i>
+                                <i class="bi bi-database" title="SQL"></i>
+                                <i class="bi bi-braces" title="Angular"></i>
+                                <i class="bi bi-git" title="Git"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="hero-image">
-                        <i class="bi bi-code-square"></i>
+                    <div class="hero-image animate-float">
+                        <div class="code-window">
+                            <div class="code-header">
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <div class="code-content">
+                                <pre><code>class Developer {
+    name = "Clemens";
+    role = "Fullstack";
+    skills = ["C#", "Angular", 
+              "MVC", "Blazor", ".NET Maui", SQL"];
+                                
+    code() {
+        while(true) {
+            this.learnNewThings();
+            this.buildCoolStuff();
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -68,25 +106,60 @@
     <section id="about" class="section-padding">
         <div class="container">
             <div class="section-title">
-                <h2>About Me</h2>
+                <span class="section-subtitle">About Me</span>
+                <h2>Professional Background</h2>
             </div>
             <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 text-center mb-5">
-                    <p class="lead">I'm a Fullstack Software Developer with 2 years of professional experience, specializing in C# and web development. Based in Austria, I focus on creating efficient and scalable solutions using modern technologies and best practices.</p>
-                </div>
-            </div>
-            <div class="about-stats">
-                <div class="stat-item">
-                    <h3>2+</h3>
-                    <p>Years of Experience</p>
-                </div>
-                <div class="stat-item">
-                    <h3>AT</h3>
-                    <p>Austria Based</p>
-                </div>
-                <div class="stat-item">
-                    <h3>Full</h3>
-                    <p>Stack Developer</p>
+                <div class="col-lg-8 col-md-10">
+                    <div class="about-card">
+                        <div class="about-content">
+                            <div class="about-header">
+                                <div class="about-icon">
+                                    <i class="bi bi-person-workspace"></i>
+                                </div>
+                                <div class="about-text">
+                                    <p class="lead">I'm a Fullstack Software Developer with 2 years of professional experience, specializing in C# and web development. Based in Austria, I focus on creating efficient and scalable solutions using modern technologies and best practices.</p>
+                                </div>
+                            </div>
+                            <div class="about-stats">
+                                <div class="stat-item" data-aos="fade-up">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-clock-history"></i>
+                                    </div>
+                                    <h3>2+</h3>
+                                    <p>Years of Experience</p>
+                                </div>
+                                <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </div>
+                                    <h3>AT</h3>
+                                    <p>Austria Based</p>
+                                </div>
+                                <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="stat-icon">
+                                        <i class="bi bi-code-slash"></i>
+                                    </div>
+                                    <h3>Full</h3>
+                                    <p>Stack Developer</p>
+                                </div>
+                            </div>
+                            <div class="about-highlights">
+                                <div class="highlight-item">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Clean Code Advocate</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Agile Development</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Problem Solver</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,22 +169,52 @@
     <section id="education" class="section-padding bg-light">
         <div class="container">
             <div class="section-title">
-                <h2>Education</h2>
+                <span class="section-subtitle">Education Journey</span>
+                <h2>Academic Background</h2>
             </div>
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="education-card">
-                        <div class="education-content">
-                            <h3>HTL Wiener Neustadt</h3>
-                            <p class="education-type">Higher Technical College</p>
-                            <p class="education-description">
-                                Technical education with a focus on Computer Science and Software Development at HTL Wiener Neustadt,
-                                one of the leading technical colleges in Lower Austria. The curriculum provided a strong foundation in
-                                both theoretical concepts and practical programming skills.
-                            </p>
-                            <a href="https://www.htlwrn.ac.at/" target="_blank" class="btn btn-outline-primary mt-3">
-                                <i class="bi bi-link-45deg me-2"></i>School Website
-                            </a>
+                    <div class="timeline">
+                        <div class="timeline-item" data-aos="fade-up">
+                            <div class="timeline-dot"></div>
+                            <div class="education-card">
+                                <div class="education-content">
+                                    <div class="education-header">
+                                        <div class="education-title">
+                                            <h3>HTL Wiener Neustadt</h3>
+                                            <span class="education-type">Higher Technical College</span>
+                                        </div>
+                                        <div class="education-meta">
+                                            <span class="education-date">
+                                                <i class="bi bi-calendar3"></i>
+                                                2018 - 2023
+                                            </span>
+                                            <span class="education-location">
+                                                <i class="bi bi-geo-alt"></i>
+                                                Wiener Neustadt, AT
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="education-body">
+                                        <p class="education-description">
+                                            Technical education with a focus on Computer Science and Software Development at HTL Wiener Neustadt,
+                                            one of the leading technical colleges in Lower Austria. The curriculum provided a strong foundation in
+                                            both theoretical concepts and practical programming skills.
+                                        </p>
+                                        <div class="education-highlights">
+                                            <div class="highlight-tag">Software Development</div>
+                                            <div class="highlight-tag">Computer Science</div>
+                                            <div class="highlight-tag">Project Management</div>
+                                            <div class="highlight-tag">Team Collaboration</div>
+                                        </div>
+                                    </div>
+                                    <div class="education-footer">
+                                        <a href="https://www.htlwrn.ac.at/" target="_blank" class="btn btn-outline-primary btn-hover-float">
+                                            <i class="bi bi-link-45deg me-2"></i>School Website
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -120,46 +223,113 @@
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="section-padding bg-light">
+    <section id="skills" class="section-padding">
         <div class="container">
             <div class="section-title">
+                <span class="section-subtitle">What I Do Best</span>
                 <h2>Technical Expertise</h2>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="skill-card h-100">
-                        <i class="bi bi-code-slash"></i>
-                        <h3>Techstack</h3>
-                        <ul>
-                            <li>C# / .NET</li>
-                            <li>Angular / Blazor</li>
-                            <li>SQL / PostgreSQL</li>
-                            <li>REST APIs</li>
-                        </ul>
+                <div class="col-lg-4 col-md-6">
+                    <div class="skill-card" data-aos="fade-up">
+                        <div class="skill-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <h3>Backend Development</h3>
+                        <div class="skill-list">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">C# / .NET</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress advanced"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">SQL / PostgreSQL</span>
+                                    <span class="skill-level">Proficient</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress proficient"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">REST APIs</span>
+                                    <span class="skill-level">Proficient</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress proficient"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="skill-card h-100">
-                        <i class="bi bi-diagram-3"></i>
-                        <h3>Development Practices</h3>
-                        <ul>
-                            <li>Agile Methodology</li>
-                            <li>Version Control</li>
-                            <li>Clean Code</li>
-                            <li>Team Collaboration</li>
-                        </ul>
+                <div class="col-lg-4 col-md-6">
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="skill-icon">
+                            <i class="bi bi-window"></i>
+                        </div>
+                        <h3>Frontend Development</h3>
+                        <div class="skill-list">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">Angular / Blazor</span>
+                                    <span class="skill-level">Proficient</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress proficient"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">HTML / CSS</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress advanced"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">JavaScript</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress advanced"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="skill-card h-100">
-                        <i class="bi bi-cloud"></i>
-                        <h3>Web Development</h3>
-                        <ul>
-                            <li>HTML / CSS</li>
-                            <li>JavaScript / JQuery</li>
-                            <li>Responsive Design</li>
-                            <li>Web Standards</li>
-                        </ul>
+                <div class="col-lg-4 col-md-6">
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="skill-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                        <h3>Development Tools</h3>
+                        <div class="skill-list">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">Git / GitHub</span>
+                                    <span class="skill-level">Intermediate</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress intermediate"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-label">Visual Studio</span>
+                                    <span class="skill-level">Advanced</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress advanced"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,5 +349,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="particles.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
 </body>
 </html>

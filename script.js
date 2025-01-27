@@ -123,3 +123,19 @@ themeToggle.addEventListener('click', () => {
         themeIcon.classList.replace('bi-sun-fill', 'bi-moon-fill');
     }
 });
+
+// Add scroll reveal animation for skill cards
+const revealOnScroll = () => {
+    const cards = document.querySelectorAll('.skill-card');
+    cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        const triggerBottom = window.innerHeight * 0.8;
+        
+        if (cardTop < triggerBottom) {
+            card.classList.add('visible');
+        }
+    });
+};
+
+window.addEventListener('scroll', revealOnScroll);
+window.addEventListener('load', revealOnScroll);
