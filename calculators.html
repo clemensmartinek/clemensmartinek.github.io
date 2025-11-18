@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Calculators - Clemens Martinek</title>
+    <link rel="stylesheet" href="calculator-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="calculator-container">
+        <header class="calculator-header">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Portfolio
+            </a>
+            <h1>Financial Calculators</h1>
+        </header>
+
+        <main class="calculator-main">
+            <div class="calculator-card">
+                <h2><i class="fas fa-coins"></i> Stable Coin Lending Calculator</h2>
+                <p class="calculator-description">Calculate your potential returns from stable coin lending with configurable APY rates and optional monthly savings.</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="starting-amount">Starting Amount (EUR)</label>
+                        <input type="number" id="starting-amount" value="1000" min="0" step="100">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="apy-rate">Annual Percentage Yield (APY)</label>
+                        <div class="slider-container">
+                            <input type="range" id="apy-rate" min="3" max="7" value="5" step="0.1">
+                            <div class="slider-value"><span id="apy-display">5.0</span>%</div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="monthly-savings">Monthly Additional Investment (EUR)</label>
+                        <input type="number" id="monthly-savings" value="0" min="0" step="50">
+                        <small>Optional: Add monthly contributions to your investment</small>
+                    </div>
+
+                    <div class="toggle-group">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="enable-savings" checked>
+                            <span class="toggle-slider"></span>
+                            Enable Monthly Savings Plan
+                        </label>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>Projected Returns</h3>
+                    <div class="results-grid">
+                        <div class="result-card">
+                            <div class="result-icon"><i class="fas fa-calendar-day"></i></div>
+                            <div class="result-content">
+                                <h4>Bi-Weekly Payout</h4>
+                                <p class="result-value" id="biweekly-gross">€0.00</p>
+                                <small>Before 27.5% tax</small>
+                                <p class="result-net" id="biweekly-net">€0.00 after tax</p>
+                            </div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <div class="result-content">
+                                <h4>Monthly Returns</h4>
+                                <p class="result-value" id="monthly-gross">€0.00</p>
+                                <small>Before 27.5% tax</small>
+                                <p class="result-net" id="monthly-net">€0.00 after tax</p>
+                            </div>
+                        </div>
+
+                        <div class="result-card">
+                            <div class="result-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="result-content">
+                                <h4>Yearly Returns</h4>
+                                <p class="result-value" id="yearly-gross">€0.00</p>
+                                <small>Before 27.5% tax</small>
+                                <p class="result-net" id="yearly-net">€0.00 after tax</p>
+                            </div>
+                        </div>
+
+                        <div class="result-card highlight">
+                            <div class="result-icon"><i class="fas fa-piggy-bank"></i></div>
+                            <div class="result-content">
+                                <h4>Total Balance After 1 Year</h4>
+                                <p class="result-value" id="total-balance">€0.00</p>
+                                <small id="balance-breakdown">Principal + Interest (after tax)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculation-notes">
+                        <h4><i class="fas fa-info-circle"></i> Calculation Details</h4>
+                        <ul>
+                            <li>Bi-weekly payouts (26 payments per year)</li>
+                            <li>27.5% tax applied to all interest earnings</li>
+                            <li>Compound interest calculated on net returns</li>
+                            <li>Monthly contributions added at the beginning of each month</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
