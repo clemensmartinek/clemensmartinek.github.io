@@ -19,70 +19,138 @@
 
         <main class="calculator-main">
             <div class="calculator-card">
-                <h2><i class="fas fa-coins"></i> Stable Coin Lending Calculator</h2>
-                <p class="calculator-description">Calculate your potential returns from stable coin lending with configurable APY rates and optional monthly savings.</p>
+                <h2><i class="fas fa-coins"></i> Lending Calculators</h2>
+                <p class="calculator-description">Compare different stable coin lending options with varying payout schedules and tax implications.</p>
                 
-                <div class="calculator-form">
-                    <div class="input-group">
-                        <label for="starting-amount">Starting Amount (EUR)</label>
-                        <input type="number" id="starting-amount" value="1000" min="0" step="100">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="apy-rate">Annual Percentage Yield (APY)</label>
-                        <div class="slider-container">
-                            <input type="range" id="apy-rate" min="3" max="7" value="5" step="0.1">
-                            <div class="slider-value"><span id="apy-display">5.0</span>%</div>
-                        </div>
-                    </div>
-
-
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button class="tab-button active" data-tab="bitpanda-self">Bitpanda Self</button>
+                    <button class="tab-button" data-tab="defi-wallet">DeFi Wallet</button>
                 </div>
 
-                <div class="results-section">
-                    <h3>Projected Returns</h3>
-                    <div class="results-grid">
-                        <div class="result-card">
-                            <div class="result-icon"><i class="fas fa-calendar-day"></i></div>
-                            <div class="result-content">
-                                <h4>Bi-Weekly Payout</h4>
-                                <p class="result-value" id="biweekly-gross">€0.00</p>
-                                <small>Before 27.5% tax</small>
-                                <p class="result-net" id="biweekly-net">€0.00 after tax</p>
-                            </div>
+                <!-- Bitpanda Self Tab -->
+                <div class="tab-content active" id="bitpanda-self">
+                    <div class="calculator-form">
+                        <div class="input-group">
+                            <label for="starting-amount-self">Invested Amount (EUR)</label>
+                            <input type="number" id="starting-amount-self" value="1000" min="0" step="100">
                         </div>
 
-                        <div class="result-card">
-                            <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
-                            <div class="result-content">
-                                <h4>Monthly Returns</h4>
-                                <p class="result-value" id="monthly-gross">€0.00</p>
-                                <small>Before 27.5% tax</small>
-                                <p class="result-net" id="monthly-net">€0.00 after tax</p>
+                        <div class="input-group">
+                            <label for="apy-rate-self">Annual Percentage Yield (APY)</label>
+                            <div class="slider-container">
+                                <input type="range" id="apy-rate-self" min="3" max="7" value="5" step="0.1">
+                                <div class="slider-value"><span id="apy-display-self">5.0</span>%</div>
                             </div>
                         </div>
-
-                        <div class="result-card">
-                            <div class="result-icon"><i class="fas fa-chart-line"></i></div>
-                            <div class="result-content">
-                                <h4>Yearly Returns</h4>
-                                <p class="result-value" id="yearly-gross">€0.00</p>
-                                <small>Before 27.5% tax</small>
-                                <p class="result-net" id="yearly-net">€0.00 after tax</p>
-                            </div>
-                        </div>
-
-
                     </div>
 
-                    <div class="calculation-notes">
-                        <h4><i class="fas fa-info-circle"></i> Calculation Details</h4>
-                        <ul>
-                            <li>Bi-weekly payouts (26 payments per year)</li>
-                            <li>27.5% tax applied to all interest earnings</li>
-                            <li>Compound interest calculated on net returns</li>
-                            <li>Monthly contributions added at the beginning of each month</li>
-                        </ul>
+                    <div class="results-section">
+                        <h3>Projected Returns (Bi-weekly Payouts, 27.5% Tax on Each)</h3>
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-calendar-day"></i></div>
+                                <div class="result-content">
+                                    <h4>Bi-Weekly Payout</h4>
+                                    <p class="result-value" id="biweekly-gross-self">€0.00</p>
+                                    <small>Before 27.5% tax</small>
+                                    <p class="result-net" id="biweekly-net-self">€0.00 after tax</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
+                                <div class="result-content">
+                                    <h4>Monthly Returns</h4>
+                                    <p class="result-value" id="monthly-gross-self">€0.00</p>
+                                    <small>Before 27.5% tax</small>
+                                    <p class="result-net" id="monthly-net-self">€0.00 after tax</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-chart-line"></i></div>
+                                <div class="result-content">
+                                    <h4>Yearly Returns</h4>
+                                    <p class="result-value" id="yearly-gross-self">€0.00</p>
+                                    <small>Before 27.5% tax</small>
+                                    <p class="result-net" id="yearly-net-self">€0.00 after tax</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="calculation-notes">
+                            <h4><i class="fas fa-info-circle"></i> Bitpanda Self Details</h4>
+                            <ul>
+                                <li>Bi-weekly payouts (26 payments per year)</li>
+                                <li>27.5% tax applied to each payout immediately</li>
+                                <li>Compound interest calculated on net returns</li>
+                                <li>More conservative due to frequent taxation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DeFi Wallet Tab -->
+                <div class="tab-content" id="defi-wallet">
+                    <div class="calculator-form">
+                        <div class="input-group">
+                            <label for="starting-amount-defi">Invested Amount (EUR)</label>
+                            <input type="number" id="starting-amount-defi" value="1000" min="0" step="100">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="apy-rate-defi">Annual Percentage Yield (APY)</label>
+                            <div class="slider-container">
+                                <input type="range" id="apy-rate-defi" min="3" max="7" value="5" step="0.1">
+                                <div class="slider-value"><span id="apy-display-defi">5.0</span>%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Projected Returns (Real-time Compounding, Tax After 1 Year)</h3>
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-clock"></i></div>
+                                <div class="result-content">
+                                    <h4>Daily Compound Growth</h4>
+                                    <p class="result-value" id="daily-compound-defi">€0.00</p>
+                                    <small>Approximate daily increase</small>
+                                    <p class="result-net">Real-time compounding</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
+                                <div class="result-content">
+                                    <h4>Monthly Growth</h4>
+                                    <p class="result-value" id="monthly-compound-defi">€0.00</p>
+                                    <small>Gross compound growth</small>
+                                    <p class="result-net">No tax applied yet</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card highlight">
+                                <div class="result-icon"><i class="fas fa-chart-line"></i></div>
+                                <div class="result-content">
+                                    <h4>Yearly Total (After Tax)</h4>
+                                    <p class="result-value" id="yearly-total-defi">€0.00</p>
+                                    <small>Total balance after 1 year</small>
+                                    <p class="result-net" id="yearly-breakdown-defi">Principal + Interest</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="calculation-notes">
+                            <h4><i class="fas fa-info-circle"></i> DeFi Wallet Details</h4>
+                            <ul>
+                                <li>Real-time compound interest (continuous compounding)</li>
+                                <li>27.5% tax applied only at year-end on total gains</li>
+                                <li>Higher potential returns due to continuous compounding</li>
+                                <li>Tax efficiency through delayed taxation</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
