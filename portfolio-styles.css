@@ -7,7 +7,8 @@
 
 html {
 	scroll-behavior: smooth;
-	overflow: hidden; /* Disable scrolling */
+	overflow: hidden;
+	/* Disable scrolling */
 }
 
 body {
@@ -15,8 +16,10 @@ body {
 	line-height: 1.6;
 	color: #1a1a1a;
 	background: #ffffff;
-	overflow: hidden; /* Disable scrolling */
-	height: 100vh; /* Full viewport height */
+	overflow: hidden;
+	/* Disable scrolling */
+	height: 100vh;
+	/* Full viewport height */
 }
 
 /* Main Container */
@@ -36,7 +39,7 @@ body {
 	height: 100vh;
 	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 	position: relative;
-	padding: 20px;
+	padding: 40px;
 	overflow: hidden;
 }
 
@@ -348,7 +351,7 @@ body {
 
 @media (max-width: 768px) {
 	.hero {
-		padding: 15px;
+		padding: 25px;
 	}
 
 	.hero-content {
@@ -447,7 +450,7 @@ body {
 
 @media (max-width: 480px) {
 	.hero {
-		padding: 10px;
+		padding: 20px;
 	}
 
 	.hero-content {
@@ -561,6 +564,7 @@ body {
 		opacity: 0;
 		transform: translateY(30px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -575,9 +579,11 @@ body {
 .tech-category:nth-child(1) {
 	animation-delay: 0.1s;
 }
+
 .tech-category:nth-child(2) {
 	animation-delay: 0.2s;
 }
+
 .tech-category:nth-child(3) {
 	animation-delay: 0.3s;
 }

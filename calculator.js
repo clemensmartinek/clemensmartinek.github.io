@@ -4,8 +4,7 @@ $(document).ready(function () {
 	updateCalculations();
 
 	// Event listeners
-	$("#starting-amount, #apy-rate, #monthly-savings").on("input", updateCalculations);
-	$("#enable-savings").on("change", toggleSavingsPlan);
+	$("#starting-amount, #apy-rate").on("input", updateCalculations);
 
 	// APY slider display update
 	$("#apy-rate").on("input", function () {
@@ -13,31 +12,10 @@ $(document).ready(function () {
 		updateCalculations();
 	});
 
-	// Toggle savings plan functionality
-	function toggleSavingsPlan() {
-		const isEnabled = $("#enable-savings").is(":checked");
-		const monthlySavingsInput = $("#monthly-savings");
-
-		if (isEnabled) {
-			monthlySavingsInput.prop("disabled", false);
-			monthlySavingsInput.parent().removeClass("disabled");
-		} else {
-			monthlySavingsInput.prop("disabled", true);
-			monthlySavingsInput.val(0);
-			monthlySavingsInput.parent().addClass("disabled");
-		}
-
-		updateCalculations();
-	}
-
 	// Main calculation function
 	function updateCalculations() {
 		const startingAmount = parseFloat($("#starting-amount").val()) || 0;
 		const apyRate = parseFloat($("#apy-rate").val()) || 5;
-		const monthlySavings = parseFloat($("#monthly-savings").val()) || 0;
-		const enableSavings = $("#enable-savings").is(":checked");
-
-		const effectiveMonthlySavings = enableSavings ? monthlySavings : 0;
 		const taxRate = 0.275; // 27.5% tax
 
 		// Calculate bi-weekly returns
@@ -51,29 +29,8 @@ $(document).ready(function () {
 		const monthlyTax = monthlyGrossInterest * taxRate;
 		const monthlyNetInterest = monthlyGrossInterest - monthlyTax;
 
-		// Calculate yearly returns with compound interest and monthly contributions
-		let balance = startingAmount;
-		let totalGrossInterest = 0;
-		let totalContributions = effectiveMonthlySavings * 12;
-
-		// Simulate monthly compound interest with contributions
-		for (let month = 1; month <= 12; month++) {
-			// Add monthly contribution at beginning of month
-			if (effectiveMonthlySavings > 0) {
-				balance += effectiveMonthlySavings;
-			}
-
-			// Calculate monthly gross interest
-			const monthlyGross = balance * (apyRate / 100 / 12);
-			totalGrossInterest += monthlyGross;
-
-			// Add net interest to balance (compound)
-			const monthlyTaxAmount = monthlyGross * taxRate;
-			const monthlyNet = monthlyGross - monthlyTaxAmount;
-			balance += monthlyNet;
-		}
-
-		const yearlyGrossInterest = totalGrossInterest;
+		// Calculate yearly returns with compound interest
+		const yearlyGrossInterest = startingAmount * (apyRate / 100);
 		const yearlyTax = yearlyGrossInterest * taxRate;
 		const yearlyNetInterest = yearlyGrossInterest - yearlyTax;
 
@@ -85,9 +42,6 @@ $(document).ready(function () {
 			monthlyNet: monthlyNetInterest,
 			yearlyGross: yearlyGrossInterest,
 			yearlyNet: yearlyNetInterest,
-			totalBalance: balance,
-			startingAmount: startingAmount,
-			totalContributions: totalContributions,
 		});
 	}
 
@@ -101,17 +55,6 @@ $(document).ready(function () {
 
 		$("#yearly-gross").text(formatCurrency(results.yearlyGross));
 		$("#yearly-net").text(formatCurrency(results.yearlyNet) + " after tax");
-
-		$("#total-balance").text(formatCurrency(results.totalBalance));
-
-		// Update balance breakdown
-		const principal = results.startingAmount + results.totalContributions;
-		const interest = results.yearlyNet;
-		$("#balance-breakdown").text(
-			`€${formatNumber(principal)} principal + €${formatNumber(interest)} interest (after tax)${
-				results.totalContributions > 0 ? ` + €${formatNumber(results.totalContributions)} contributions` : ""
-			}`
-		);
 	}
 
 	// Format currency helper
@@ -127,35 +70,8 @@ $(document).ready(function () {
 		}).format(amount);
 	}
 
-	// Initialize savings plan toggle
-	toggleSavingsPlan();
-
-	// Add some interactive animations
-	$(".result-card").hover(
-		function () {
-			$(this).addClass("hovered");
-		},
-		function () {
-			$(this).removeClass("hovered");
-		}
-	);
-
-	// Smooth scroll for any internal navigation
-	$('a[href^="#"]').on("click", function (e) {
-		e.preventDefault();
-		const target = $(this.hash);
-		if (target.length) {
-			$("html, body").animate(
-				{
-					scrollTop: target.offset().top - 80,
-				},
-				500
-			);
-		}
-	});
-
 	// Add input validation
-	$("#starting-amount, #monthly-savings").on("blur", function () {
+	$("#starting-amount").on("blur", function () {
 		const value = parseFloat($(this).val());
 		if (isNaN(value) || value < 0) {
 			$(this).val(0);
