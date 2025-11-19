@@ -18,14 +18,13 @@
         </header>
 
         <main class="calculator-main">
-            <div class="calculator-card">
-                <h2><i class="fas fa-coins"></i> Lending Calculators</h2>
-                <p class="calculator-description">Compare different stable coin lending options with varying payout schedules and tax implications.</p>
-                
-                <!-- Tab Navigation -->
+            <div class="calculator-card">                <h2><i class="fas fa-calculator"></i> Financial Calculators</h2>
+                <p class="calculator-description">Compare different investment options including lending platforms and portfolio projections with tax implications.</p>
+                  <!-- Tab Navigation -->
                 <div class="tab-navigation">
                     <button class="tab-button active" data-tab="bitpanda-self">Bitpanda Self</button>
                     <button class="tab-button" data-tab="defi-wallet">DeFi Wallet</button>
+                    <button class="tab-button" data-tab="portfolio-return">Portfolio Return</button>
                 </div>
 
                 <!-- Bitpanda Self Tab -->
@@ -149,6 +148,112 @@
                                 <li>27.5% tax applied only at year-end on total gains</li>
                                 <li>Higher potential returns due to continuous compounding</li>
                                 <li>Tax efficiency through delayed taxation</li>
+                            </ul>                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Return Calculator Tab -->
+                <div class="tab-content" id="portfolio-return">
+                    <div class="calculator-form">                        <div class="input-group">
+                            <label for="all-world-etf">All World ETF (EUR)</label>
+                            <input type="number" id="all-world-etf" value="1000" min="0" step="100">
+                            <small>Default APY: 7%</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="day-money">Day Money (EUR)</label>
+                            <input type="number" id="day-money" value="500" min="0" step="100">
+                            <small>Default APY: 2%</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="vsn">VSN (EUR)</label>
+                            <input type="number" id="vsn" value="750" min="0" step="100">
+                            <small>Default APY: 10%</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="eurcv">EURCV (EUR)</label>
+                            <input type="number" id="eurcv" value="250" min="0" step="100">
+                            <small>Default APY: 5%</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="years-projection">Years to Project</label>
+                            <input type="number" id="years-projection" value="1" min="1" max="50" step="1">
+                            <small>Number of years for projection</small>
+                        </div>
+
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="apply-tax">
+                                <div class="toggle-slider"></div>
+                                Apply 27.5% Tax
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="results-section">
+                        <h3>Portfolio Projection Results</h3>
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-globe"></i></div>
+                                <div class="result-content">
+                                    <h4>All World ETF</h4>
+                                    <p class="result-value" id="etf-result">€0.00</p>
+                                    <small>7% APY</small>
+                                    <p class="result-net" id="etf-gains">€0.00 gains</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-piggy-bank"></i></div>
+                                <div class="result-content">
+                                    <h4>Day Money</h4>
+                                    <p class="result-value" id="day-money-result">€0.00</p>
+                                    <small>2% APY</small>
+                                    <p class="result-net" id="day-money-gains">€0.00 gains</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-chart-pie"></i></div>
+                                <div class="result-content">
+                                    <h4>VSN</h4>
+                                    <p class="result-value" id="vsn-result">€0.00</p>
+                                    <small>10% APY</small>
+                                    <p class="result-net" id="vsn-gains">€0.00 gains</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="result-icon"><i class="fas fa-coins"></i></div>
+                                <div class="result-content">
+                                    <h4>EURCV</h4>
+                                    <p class="result-value" id="eurcv-result">€0.00</p>
+                                    <small>5% APY</small>
+                                    <p class="result-net" id="eurcv-gains">€0.00 gains</p>
+                                </div>
+                            </div>
+
+                            <div class="result-card highlight">
+                                <div class="result-icon"><i class="fas fa-wallet"></i></div>
+                                <div class="result-content">
+                                    <h4>Total Portfolio Value</h4>
+                                    <p class="result-value" id="total-portfolio">€0.00</p>
+                                    <small>After <span id="years-display">1</span> year(s)</small>
+                                    <p class="result-net" id="total-gains">€0.00 total gains</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="calculation-notes">
+                            <h4><i class="fas fa-info-circle"></i> Portfolio Calculator Details</h4>
+                            <ul>
+                                <li>Compound interest calculated annually for each investment</li>
+                                <li>Tax option applies 27.5% to gains only (not principal)</li>
+                                <li>Default APY rates: All World ETF (7%), Day Money (2%), VSN (10%), EURCV (5%)</li>
+                                <li>Projections assume no additional contributions during the period</li>
                             </ul>
                         </div>
                     </div>

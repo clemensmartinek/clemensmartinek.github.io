@@ -3,6 +3,7 @@ $(document).ready(function () {
 	// Initialize
 	updateBitpandaSelfCalculations();
 	updateDeFiWalletCalculations();
+	updatePortfolioCalculations();
 
 	// Tab switching
 	$(".tab-button").on("click", function () {
@@ -42,12 +43,13 @@ $(document).ready(function () {
 		// Update tab content
 		$(".tab-content").removeClass("active");
 		$("#" + targetTab).addClass("active");
-
 		// Recalculate for the new tab
 		if (targetTab === "bitpanda-self") {
 			updateBitpandaSelfCalculations();
-		} else {
+		} else if (targetTab === "defi-wallet") {
 			updateDeFiWalletCalculations();
+		} else if (targetTab === "portfolio-return") {
+			updatePortfolioCalculations();
 		}
 	});
 
@@ -143,22 +145,30 @@ $(document).ready(function () {
 			maximumFractionDigits: 2,
 		}).format(amount);
 	}
-
 	// Add input validation
-	$("#starting-amount-self, #starting-amount-defi").on("blur", function () {
+	$("#starting-amount-self, #starting-amount-defi, #all-world-etf, #day-money, #vsn, #eurcv").on("blur", function () {
 		const value = parseFloat($(this).val());
 		if (isNaN(value) || value < 0) {
 			$(this).val(0);
 			if ($(this).attr("id").includes("self")) {
 				updateBitpandaSelfCalculations();
-			} else {
+			} else if ($(this).attr("id").includes("defi")) {
 				updateDeFiWalletCalculations();
+			} else {
+				updatePortfolioCalculations();
 			}
 		}
 	});
+	// Portfolio Return Calculator event listeners
+	$("#all-world-etf, #day-money, #vsn, #eurcv, #years-projection").on("input", updatePortfolioCalculations);
+	$("#apply-tax").on("change", updatePortfolioCalculations);
+	$("#years-projection").on("input", function() {
+		$("#years-display").text($(this).val());
+		updatePortfolioCalculations();
+	});
 
 	// Format large numbers on input
-	$("#starting-amount-self, #starting-amount-defi").on("input", function () {
+	$("#starting-amount-self, #starting-amount-defi, #all-world-etf, #day-money, #vsn, #eurcv").on("input", function () {
 		const value = parseFloat($(this).val());
 		if (value >= 10000) {
 			$(this).addClass("large-number");
@@ -166,7 +176,70 @@ $(document).ready(function () {
 			$(this).removeClass("large-number");
 		}
 	});
+	// Portfolio Return calculation function
+	function updatePortfolioCalculations() {
+		const etfAmount = parseFloat($("#all-world-etf").val()) || 0;
+		const dayMoneyAmount = parseFloat($("#day-money").val()) || 0;
+		const vsnAmount = parseFloat($("#vsn").val()) || 0;
+		const eurcvAmount = parseFloat($("#eurcv").val()) || 0;
+		const years = parseFloat($("#years-projection").val()) || 1;
+		const applyTax = $("#apply-tax").is(":checked");
+		const taxRate = 0.275; // 27.5%
+
+		// APY rates
+		const etfAPY = 0.07; // 7%
+		const dayMoneyAPY = 0.02; // 2%
+		const vsnAPY = 0.10; // 10%
+		const eurcvAPY = 0.05; // 5%
+
+		// Calculate compound growth for each investment
+		const etfFinalAmount = etfAmount * Math.pow(1 + etfAPY, years);
+		const dayMoneyFinalAmount = dayMoneyAmount * Math.pow(1 + dayMoneyAPY, years);
+		const vsnFinalAmount = vsnAmount * Math.pow(1 + vsnAPY, years);
+		const eurcvFinalAmount = eurcvAmount * Math.pow(1 + eurcvAPY, years);
+
+		// Calculate gains
+		let etfGains = etfFinalAmount - etfAmount;
+		let dayMoneyGains = dayMoneyFinalAmount - dayMoneyAmount;
+		let vsnGains = vsnFinalAmount - vsnAmount;
+		let eurcvGains = eurcvFinalAmount - eurcvAmount;
+
+		// Apply tax if checked
+		if (applyTax) {
+			etfGains = etfGains * (1 - taxRate);
+			dayMoneyGains = dayMoneyGains * (1 - taxRate);
+			vsnGains = vsnGains * (1 - taxRate);
+			eurcvGains = eurcvGains * (1 - taxRate);
+		}
+
+		// Calculate final amounts after tax (principal + gains after tax)
+		const etfFinalAfterTax = etfAmount + etfGains;
+		const dayMoneyFinalAfterTax = dayMoneyAmount + dayMoneyGains;
+		const vsnFinalAfterTax = vsnAmount + vsnGains;
+		const eurcvFinalAfterTax = eurcvAmount + eurcvGains;
+
+		// Calculate totals
+		const totalFinalAmount = etfFinalAfterTax + dayMoneyFinalAfterTax + vsnFinalAfterTax + eurcvFinalAfterTax;
+		const totalGains = etfGains + dayMoneyGains + vsnGains + eurcvGains;
+
+		// Update display
+		$("#etf-result").text(formatCurrency(etfFinalAfterTax));
+		$("#etf-gains").text(formatCurrency(etfGains) + " gains");
+		
+		$("#day-money-result").text(formatCurrency(dayMoneyFinalAfterTax));
+		$("#day-money-gains").text(formatCurrency(dayMoneyGains) + " gains");
+		
+		$("#vsn-result").text(formatCurrency(vsnFinalAfterTax));
+		$("#vsn-gains").text(formatCurrency(vsnGains) + " gains");
+		
+		$("#eurcv-result").text(formatCurrency(eurcvFinalAfterTax));
+		$("#eurcv-gains").text(formatCurrency(eurcvGains) + " gains");
+		
+		$("#total-portfolio").text(formatCurrency(totalFinalAmount));
+		$("#total-gains").text(formatCurrency(totalGains) + " total gains");
+	}
 
 	console.log("🧮 Lending Calculators initialized");
 	console.log("💰 Compare Bitpanda Self vs DeFi Wallet returns!");
+	console.log("📊 Portfolio Return Calculator added!");
 });
