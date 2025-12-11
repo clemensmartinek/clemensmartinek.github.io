@@ -1,138 +1,183 @@
-// Lending Calculators with Tab Support
+// Broker | Stablecoin Lending Calculator
 $(document).ready(function () {
 	// Initialize
-	updateBitpandaSelfCalculations();
-	updateDeFiWalletCalculations();
-	updatePortfolioCalculations();
+	updateCalculations();
 
-	// Tab switching
-	$(".tab-button").on("click", function () {
-		const targetTab = $(this).data("tab");
+	// Event listeners
+	$("#starting-amount, #apy-rate, #weeks-duration").on("input", updateCalculations);
 
-		// Sync invested amount values between tabs
-		const currentAmount = targetTab === "bitpanda-self"
-			? $("#starting-amount-defi").val()
-			: $("#starting-amount-self").val();
+	$("#apy-rate").on("input", function () {
+		$("#apy-display").text(parseFloat($(this).val()).toFixed(1));
+		updateCalculations();
+	});
 
-		const targetAmountInput = targetTab === "bitpanda-self"
-			? "#starting-amount-self"
-			: "#starting-amount-defi";
+	$("#weeks-duration").on("input", function () {
+		$("#weeks-display").text($(this).val());
+		$("#weeks-display-2").text($(this).val());
+		updateCalculations();
+	});
+	// Reinvestment toggle
+	$("#reinvest-toggle").on("change", function () {
+		const isChecked = $(this).is(":checked");
 
-		$(targetAmountInput).val(currentAmount);
+		// Toggle duration input with animation
+		if (isChecked) {
+			$("#duration-group").slideDown(300);
+			$("#weeks-duration").prop("disabled", false);
+			$("#standard-returns").fadeOut(200, function () {
+				$("#reinvest-returns").fadeIn(300);
+			});
+		} else {
+			$("#duration-group").slideUp(300);
+			$("#weeks-duration").prop("disabled", true);
+			$("#reinvest-returns").fadeOut(200, function () {
+				$("#standard-returns").fadeIn(300);
+			});
+		}
 
-		// Sync APY values between tabs
-		const currentAPY = targetTab === "bitpanda-self"
-			? $("#apy-rate-defi").val()
-			: $("#apy-rate-self").val();
+		updateCalculations();
+	});
 
-		const targetAPYInput = targetTab === "bitpanda-self"
-			? "#apy-rate-self"
-			: "#apy-rate-defi";
+	// Preset duration buttons
+	$(".preset-btn").on("click", function () {
+		const weeks = $(this).data("weeks");
+		$("#weeks-duration").val(weeks);
 
-		const targetAPYDisplay = targetTab === "bitpanda-self"
-			? "#apy-display-self"
-			: "#apy-display-defi";
-
-		$(targetAPYInput).val(currentAPY);
-		$(targetAPYDisplay).text(parseFloat(currentAPY).toFixed(1));
-
-		// Update tab buttons
-		$(".tab-button").removeClass("active");
+		// Update active button
+		$(".preset-btn").removeClass("active");
 		$(this).addClass("active");
 
-		// Update tab content
-		$(".tab-content").removeClass("active");
-		$("#" + targetTab).addClass("active");
-		// Recalculate for the new tab
-		if (targetTab === "bitpanda-self") {
-			updateBitpandaSelfCalculations();
-		} else if (targetTab === "defi-wallet") {
-			updateDeFiWalletCalculations();
-		} else if (targetTab === "portfolio-return") {
-			updatePortfolioCalculations();
+		// Update displays and recalculate
+		$("#weeks-display").text(weeks);
+		$("#weeks-display-2").text(weeks);
+		updateCalculations();
+	});
+
+	// When custom weeks input is used, remove active from presets
+	$("#weeks-duration").on("input", function () {
+		const customWeeks = parseInt($(this).val());
+		let matchesPreset = false;
+
+		$(".preset-btn").each(function () {
+			if ($(this).data("weeks") === customWeeks) {
+				$(".preset-btn").removeClass("active");
+				$(this).addClass("active");
+				matchesPreset = true;
+				return false;
+			}
+		});
+
+		if (!matchesPreset) {
+			$(".preset-btn").removeClass("active");
 		}
 	});
 
-	// Bitpanda Self event listeners
-	$("#starting-amount-self, #apy-rate-self").on("input", updateBitpandaSelfCalculations);
-	$("#apy-rate-self").on("input", function () {
-		$("#apy-display-self").text(parseFloat($(this).val()).toFixed(1));
-		updateBitpandaSelfCalculations();
-	});
-
-	// DeFi Wallet event listeners
-	$("#starting-amount-defi, #apy-rate-defi").on("input", updateDeFiWalletCalculations);
-	$("#apy-rate-defi").on("input", function () {
-		$("#apy-display-defi").text(parseFloat($(this).val()).toFixed(1));
-		updateDeFiWalletCalculations();
-	});
-
-	// Bitpanda Self calculation function
-	function updateBitpandaSelfCalculations() {
-		const startingAmount = parseFloat($("#starting-amount-self").val()) || 0;
-		const apyRate = parseFloat($("#apy-rate-self").val()) || 5;
+	// Main calculation function
+	function updateCalculations() {
+		const startingAmount = parseFloat($("#starting-amount").val()) || 0;
+		const apyRate = parseFloat($("#apy-rate").val()) || 5;
+		const weeks = parseInt($("#weeks-duration").val()) || 26;
 		const taxRate = 0.275; // 27.5% tax
+		const isReinvesting = $("#reinvest-toggle").is(":checked");
 
-		// Calculate bi-weekly returns (tax applied immediately)
+		// Calculate bi-weekly rate
 		const biweeklyRate = apyRate / 100 / 26; // 26 bi-weekly periods per year
-		const biweeklyGrossInterest = startingAmount * biweeklyRate;
-		const biweeklyTax = biweeklyGrossInterest * taxRate;
-		const biweeklyNetInterest = biweeklyGrossInterest - biweeklyTax;
 
-		// Calculate monthly returns
-		const monthlyGrossInterest = biweeklyGrossInterest * 2.17; // ~26/12 periods per month
-		const monthlyTax = monthlyGrossInterest * taxRate;
-		const monthlyNetInterest = monthlyGrossInterest - monthlyTax;
+		if (!isReinvesting) {
+			// Standard calculations (no reinvestment)
+			calculateStandardReturns(startingAmount, biweeklyRate, taxRate);
+		} else {
+			// Reinvestment calculations
+			calculateReinvestmentReturns(startingAmount, biweeklyRate, taxRate, weeks);
+		}
+	}
 
-		// Calculate yearly returns with compound interest on net amounts
+	// Calculate standard returns without reinvestment
+	function calculateStandardReturns(principal, biweeklyRate, taxRate) {
+		// Bi-weekly
+		const biweeklyGross = principal * biweeklyRate;
+		const biweeklyNet = biweeklyGross * (1 - taxRate);
+
+		// Monthly (approximately 2.17 bi-weekly periods per month)
+		const monthlyGross = biweeklyGross * 2.17;
+		const monthlyNet = monthlyGross * (1 - taxRate);
+
+		// Yearly (26 bi-weekly periods per year)
+		const yearlyGross = biweeklyGross * 26;
+		const yearlyNet = yearlyGross * (1 - taxRate);
+
+		// Update display
+		$("#biweekly-gross").text(formatCurrency(biweeklyGross));
+		$("#biweekly-net").text(formatCurrency(biweeklyNet) + " after tax");
+		$("#monthly-gross").text(formatCurrency(monthlyGross));
+		$("#monthly-net").text(formatCurrency(monthlyNet) + " after tax");
+		$("#yearly-gross").text(formatCurrency(yearlyGross));
+		$("#yearly-net").text(formatCurrency(yearlyNet) + " after tax");
+	}
+
+	// Calculate reinvestment returns with compounding
+	function calculateReinvestmentReturns(startingAmount, biweeklyRate, taxRate, weeks) {
+		const numberOfPayouts = Math.floor(weeks / 2);
+
+		// Initial payouts (before any compounding)
+		const initialBiweekly = startingAmount * biweeklyRate * (1 - taxRate);
+		const initialMonthly = initialBiweekly * 2.17;
+		const initialYearly = initialBiweekly * 26;
+
+		// Simulate compounding
 		let balance = startingAmount;
-		for (let i = 0; i < 26; i++) {
+		let totalNetInterest = 0;
+
+		for (let i = 0; i < numberOfPayouts; i++) {
 			const grossInterest = balance * biweeklyRate;
 			const netInterest = grossInterest * (1 - taxRate);
+			totalNetInterest += netInterest;
 			balance += netInterest;
 		}
-		const yearlyGrossInterest = startingAmount * (apyRate / 100);
-		const yearlyNetInterest = balance - startingAmount;
 
-		// Update Bitpanda Self display
-		$("#biweekly-gross-self").text(formatCurrency(biweeklyGrossInterest));
-		$("#biweekly-net-self").text(formatCurrency(biweeklyNetInterest) + " after tax");
-		$("#monthly-gross-self").text(formatCurrency(monthlyGrossInterest));
-		$("#monthly-net-self").text(formatCurrency(monthlyNetInterest) + " after tax");
-		$("#yearly-gross-self").text(formatCurrency(yearlyGrossInterest));
-		$("#yearly-net-self").text(formatCurrency(yearlyNetInterest) + " after tax");
+		// Final payouts (after compounding)
+		const finalBiweekly = balance * biweeklyRate * (1 - taxRate);
+		const finalMonthly = finalBiweekly * 2.17;
+		const finalYearly = finalBiweekly * 26;
+		// Calculate growth percentages
+		const biweeklyGrowth = ((finalBiweekly - initialBiweekly) / initialBiweekly) * 100;
+
+		// Update summary cards
+		$("#weeks-display").text(weeks);
+		$("#weeks-display-2").text(weeks);
+		$("#final-balance").text(formatCurrency(balance));
+		$("#total-profit").text(formatCurrency(totalNetInterest) + " total profit after tax");
+		$("#total-payouts").text(numberOfPayouts);
+		$("#total-interest-earned").text(formatCurrency(totalNetInterest) + " net interest");
+
+		// Update initial payouts
+		$("#initial-biweekly").text(formatCurrency(initialBiweekly));
+		$("#initial-monthly").text(formatCurrency(initialMonthly));
+		$("#initial-yearly").text(formatCurrency(initialYearly));
+
+		// Update final payouts
+		$("#final-biweekly").text(formatCurrency(finalBiweekly));
+		$("#final-monthly").text(formatCurrency(finalMonthly));
+		$("#final-yearly").text(formatCurrency(finalYearly));
+
+		// Update overall growth badge (only once, at the top)
+		$("#overall-growth").text("+" + biweeklyGrowth.toFixed(1) + "% Growth");
+
+		// Update bar widths (scaled relative to the maximum value)
+		const maxValue = Math.max(finalYearly, initialYearly);
+		updateProgressBar("initial-biweekly-bar", initialBiweekly, maxValue);
+		updateProgressBar("initial-monthly-bar", initialMonthly, maxValue);
+		updateProgressBar("initial-yearly-bar", initialYearly, maxValue);
+		updateProgressBar("final-biweekly-bar", finalBiweekly, maxValue);
+		updateProgressBar("final-monthly-bar", finalMonthly, maxValue);
+		updateProgressBar("final-yearly-bar", finalYearly, maxValue);
 	}
 
-	// DeFi Wallet calculation function
-	function updateDeFiWalletCalculations() {
-		const startingAmount = parseFloat($("#starting-amount-defi").val()) || 0;
-		const apyRate = parseFloat($("#apy-rate-defi").val()) || 5;
-		const taxRate = 0.275; // 27.5% tax
-
-		// Calculate continuous compounding (e^rt)
-		const yearlyGrossBalance = startingAmount * Math.exp(apyRate / 100);
-		const yearlyGrossInterest = yearlyGrossBalance - startingAmount;
-		const yearlyTax = yearlyGrossInterest * taxRate;
-		const yearlyNetBalance = yearlyGrossBalance - yearlyTax;
-		const yearlyNetInterest = yearlyNetBalance - startingAmount;
-
-		// Daily compound growth (approximate)
-		const dailyRate = apyRate / 100 / 365;
-		const dailyGrowth = startingAmount * dailyRate;
-
-		// Monthly compound growth (approximate)
-		const monthlyGrossBalance = startingAmount * Math.exp((apyRate / 100) / 12);
-		const monthlyCompoundGrowth = monthlyGrossBalance - startingAmount;
-
-		// Update DeFi Wallet display
-		$("#daily-compound-defi").text(formatCurrency(dailyGrowth));
-		$("#monthly-compound-defi").text(formatCurrency(monthlyCompoundGrowth));
-		$("#yearly-total-defi").text(formatCurrency(yearlyNetInterest));
-		$("#yearly-breakdown-defi").text(
-			`€${formatNumber(yearlyGrossInterest)} gross interest - €${formatNumber(yearlyTax)} tax`
-		);
+	// Update progress bar width
+	function updateProgressBar(id, value, maxValue) {
+		const percentage = (value / maxValue) * 100;
+		$("#" + id).css("width", percentage + "%");
 	}
-
 	// Format currency helper
 	function formatCurrency(amount) {
 		return "€" + formatNumber(amount);
@@ -145,30 +190,28 @@ $(document).ready(function () {
 			maximumFractionDigits: 2,
 		}).format(amount);
 	}
+
 	// Add input validation
-	$("#starting-amount-self, #starting-amount-defi, #all-world-etf, #day-money, #vsn, #eurcv").on("blur", function () {
+	$("#starting-amount, #weeks-duration").on("blur", function () {
 		const value = parseFloat($(this).val());
 		if (isNaN(value) || value < 0) {
-			$(this).val(0);
-			if ($(this).attr("id").includes("self")) {
-				updateBitpandaSelfCalculations();
-			} else if ($(this).attr("id").includes("defi")) {
-				updateDeFiWalletCalculations();
-			} else {
-				updatePortfolioCalculations();
-			}
+			$(this).val($(this).attr("id") === "weeks-duration" ? 26 : 0);
+			updateCalculations();
 		}
 	});
-	// Portfolio Return Calculator event listeners
-	$("#all-world-etf, #day-money, #vsn, #eurcv, #years-projection").on("input", updatePortfolioCalculations);
-	$("#apply-tax").on("change", updatePortfolioCalculations);
-	$("#years-projection").on("input", function() {
-		$("#years-display").text($(this).val());
-		updatePortfolioCalculations();
+
+	// Ensure weeks is even (for bi-weekly payouts)
+	$("#weeks-duration").on("blur", function () {
+		let weeks = parseInt($(this).val());
+		if (weeks % 2 !== 0) {
+			weeks = Math.floor(weeks / 2) * 2;
+			$(this).val(weeks);
+		}
+		updateCalculations();
 	});
 
 	// Format large numbers on input
-	$("#starting-amount-self, #starting-amount-defi, #all-world-etf, #day-money, #vsn, #eurcv").on("input", function () {
+	$("#starting-amount").on("input", function () {
 		const value = parseFloat($(this).val());
 		if (value >= 10000) {
 			$(this).addClass("large-number");
@@ -176,70 +219,7 @@ $(document).ready(function () {
 			$(this).removeClass("large-number");
 		}
 	});
-	// Portfolio Return calculation function
-	function updatePortfolioCalculations() {
-		const etfAmount = parseFloat($("#all-world-etf").val()) || 0;
-		const dayMoneyAmount = parseFloat($("#day-money").val()) || 0;
-		const vsnAmount = parseFloat($("#vsn").val()) || 0;
-		const eurcvAmount = parseFloat($("#eurcv").val()) || 0;
-		const years = parseFloat($("#years-projection").val()) || 1;
-		const applyTax = $("#apply-tax").is(":checked");
-		const taxRate = 0.275; // 27.5%
 
-		// APY rates
-		const etfAPY = 0.07; // 7%
-		const dayMoneyAPY = 0.02; // 2%
-		const vsnAPY = 0.10; // 10%
-		const eurcvAPY = 0.05; // 5%
-
-		// Calculate compound growth for each investment
-		const etfFinalAmount = etfAmount * Math.pow(1 + etfAPY, years);
-		const dayMoneyFinalAmount = dayMoneyAmount * Math.pow(1 + dayMoneyAPY, years);
-		const vsnFinalAmount = vsnAmount * Math.pow(1 + vsnAPY, years);
-		const eurcvFinalAmount = eurcvAmount * Math.pow(1 + eurcvAPY, years);
-
-		// Calculate gains
-		let etfGains = etfFinalAmount - etfAmount;
-		let dayMoneyGains = dayMoneyFinalAmount - dayMoneyAmount;
-		let vsnGains = vsnFinalAmount - vsnAmount;
-		let eurcvGains = eurcvFinalAmount - eurcvAmount;
-
-		// Apply tax if checked
-		if (applyTax) {
-			etfGains = etfGains * (1 - taxRate);
-			dayMoneyGains = dayMoneyGains * (1 - taxRate);
-			vsnGains = vsnGains * (1 - taxRate);
-			eurcvGains = eurcvGains * (1 - taxRate);
-		}
-
-		// Calculate final amounts after tax (principal + gains after tax)
-		const etfFinalAfterTax = etfAmount + etfGains;
-		const dayMoneyFinalAfterTax = dayMoneyAmount + dayMoneyGains;
-		const vsnFinalAfterTax = vsnAmount + vsnGains;
-		const eurcvFinalAfterTax = eurcvAmount + eurcvGains;
-
-		// Calculate totals
-		const totalFinalAmount = etfFinalAfterTax + dayMoneyFinalAfterTax + vsnFinalAfterTax + eurcvFinalAfterTax;
-		const totalGains = etfGains + dayMoneyGains + vsnGains + eurcvGains;
-
-		// Update display
-		$("#etf-result").text(formatCurrency(etfFinalAfterTax));
-		$("#etf-gains").text(formatCurrency(etfGains) + " gains");
-		
-		$("#day-money-result").text(formatCurrency(dayMoneyFinalAfterTax));
-		$("#day-money-gains").text(formatCurrency(dayMoneyGains) + " gains");
-		
-		$("#vsn-result").text(formatCurrency(vsnFinalAfterTax));
-		$("#vsn-gains").text(formatCurrency(vsnGains) + " gains");
-		
-		$("#eurcv-result").text(formatCurrency(eurcvFinalAfterTax));
-		$("#eurcv-gains").text(formatCurrency(eurcvGains) + " gains");
-		
-		$("#total-portfolio").text(formatCurrency(totalFinalAmount));
-		$("#total-gains").text(formatCurrency(totalGains) + " total gains");
-	}
-
-	console.log("🧮 Lending Calculators initialized");
-	console.log("💰 Compare Bitpanda Self vs DeFi Wallet returns!");
-	console.log("📊 Portfolio Return Calculator added!");
+	console.log("🧮 Broker | Stablecoin Lending Calculator initialized");
+	console.log("💰 Calculate your bi-weekly compounding returns!");
 });

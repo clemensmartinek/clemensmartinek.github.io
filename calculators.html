@@ -18,42 +18,62 @@
         </header>
 
         <main class="calculator-main">
-            <div class="calculator-card">                <h2><i class="fas fa-calculator"></i> Financial Calculators</h2>
-                <p class="calculator-description">Compare different investment options including lending platforms and portfolio projections with tax implications.</p>
-                  <!-- Tab Navigation -->
-                <div class="tab-navigation">
-                    <button class="tab-button active" data-tab="bitpanda-self">Bitpanda Self</button>
-                    <button class="tab-button" data-tab="defi-wallet">DeFi Wallet</button>
-                    <button class="tab-button" data-tab="portfolio-return">Portfolio Return</button>
-                </div>
+            <div class="calculator-card">
+                <h2><i class="fas fa-coins"></i> Broker | Stablecoin Lending</h2>
+                <p class="calculator-description">Calculate your stablecoin lending returns with bi-weekly payouts and automatic reinvestment.</p>                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="starting-amount">Invested Amount (EUR)</label>
+                        <input type="number" id="starting-amount" value="1000" min="0" step="100">
+                    </div>
 
-                <!-- Bitpanda Self Tab -->
-                <div class="tab-content active" id="bitpanda-self">
-                    <div class="calculator-form">
-                        <div class="input-group">
-                            <label for="starting-amount-self">Invested Amount (EUR)</label>
-                            <input type="number" id="starting-amount-self" value="1000" min="0" step="100">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="apy-rate-self">Annual Percentage Yield (APY)</label>
-                            <div class="slider-container">
-                                <input type="range" id="apy-rate-self" min="3" max="7" value="5" step="0.1">
-                                <div class="slider-value"><span id="apy-display-self">5.0</span>%</div>
-                            </div>
+                    <div class="input-group">
+                        <label for="apy-rate">Annual Percentage Yield (APY)</label>
+                        <div class="slider-container">
+                            <input type="range" id="apy-rate" min="3" max="7" value="5" step="0.1">
+                            <div class="slider-value"><span id="apy-display">5.0</span>%</div>
                         </div>
                     </div>
 
-                    <div class="results-section">
-                        <h3>Projected Returns (Bi-weekly Payouts, 27.5% Tax on Each)</h3>
+                    <div class="input-group full-width">
+                        <div class="toggle-group">
+                            <label class="toggle-label">
+                                <input type="checkbox" id="reinvest-toggle">
+                                <div class="toggle-slider"></div>
+                                <span>Automatic Reinvestment</span>
+                            </label>
+                        </div>
+                    </div>                    <div class="input-group full-width" id="duration-group" style="display: none;">
+                        <label for="weeks-duration">Investment Duration</label>
+                        
+                        <!-- Preset Duration Buttons -->
+                        <div class="duration-presets">
+                            <button type="button" class="preset-btn" data-weeks="4">1 Month</button>
+                            <button type="button" class="preset-btn" data-weeks="12">3 Months</button>
+                            <button type="button" class="preset-btn active" data-weeks="26">6 Months</button>
+                            <button type="button" class="preset-btn" data-weeks="52">1 Year</button>
+                            <button type="button" class="preset-btn" data-weeks="104">2 Years</button>
+                            <button type="button" class="preset-btn" data-weeks="260">5 Years</button>
+                        </div>
+                        
+                        <!-- Custom Duration Input -->
+                        <div class="custom-duration">
+                            <label for="weeks-duration" class="custom-label">Or enter custom weeks:</label>
+                            <input type="number" id="weeks-duration" value="26" min="2" max="260" step="2">
+                            <small>Bi-weekly payouts occur every 2 weeks</small>
+                        </div>
+                    </div>
+                </div><div class="results-section">
+                    <!-- Standard Returns (No Reinvestment) -->
+                    <div id="standard-returns">
+                        <h3>Projected Returns (27.5% Tax Applied)</h3>
                         <div class="results-grid">
                             <div class="result-card">
                                 <div class="result-icon"><i class="fas fa-calendar-day"></i></div>
                                 <div class="result-content">
                                     <h4>Bi-Weekly Payout</h4>
-                                    <p class="result-value" id="biweekly-gross-self">€0.00</p>
+                                    <p class="result-value" id="biweekly-gross">€0.00</p>
                                     <small>Before 27.5% tax</small>
-                                    <p class="result-net" id="biweekly-net-self">€0.00 after tax</p>
+                                    <p class="result-net" id="biweekly-net">€0.00 after tax</p>
                                 </div>
                             </div>
 
@@ -61,9 +81,9 @@
                                 <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
                                 <div class="result-content">
                                     <h4>Monthly Returns</h4>
-                                    <p class="result-value" id="monthly-gross-self">€0.00</p>
+                                    <p class="result-value" id="monthly-gross">€0.00</p>
                                     <small>Before 27.5% tax</small>
-                                    <p class="result-net" id="monthly-net-self">€0.00 after tax</p>
+                                    <p class="result-net" id="monthly-net">€0.00 after tax</p>
                                 </div>
                             </div>
 
@@ -71,189 +91,134 @@
                                 <div class="result-icon"><i class="fas fa-chart-line"></i></div>
                                 <div class="result-content">
                                     <h4>Yearly Returns</h4>
-                                    <p class="result-value" id="yearly-gross-self">€0.00</p>
+                                    <p class="result-value" id="yearly-gross">€0.00</p>
                                     <small>Before 27.5% tax</small>
-                                    <p class="result-net" id="yearly-net-self">€0.00 after tax</p>
+                                    <p class="result-net" id="yearly-net">€0.00 after tax</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="calculation-notes">
-                            <h4><i class="fas fa-info-circle"></i> Bitpanda Self Details</h4>
+                            <h4><i class="fas fa-info-circle"></i> Calculation Details</h4>
                             <ul>
-                                <li>Bi-weekly payouts (26 payments per year)</li>
+                                <li>Bi-weekly payouts (every 2 weeks)</li>
                                 <li>27.5% tax applied to each payout immediately</li>
-                                <li>Compound interest calculated on net returns</li>
-                                <li>More conservative due to frequent taxation</li>
+                                <li>Returns are NOT reinvested (withdrawal scenario)</li>
+                                <li>Principal amount stays constant</li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-
-                <!-- DeFi Wallet Tab -->
-                <div class="tab-content" id="defi-wallet">
-                    <div class="calculator-form">
-                        <div class="input-group">
-                            <label for="starting-amount-defi">Invested Amount (EUR)</label>
-                            <input type="number" id="starting-amount-defi" value="1000" min="0" step="100">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="apy-rate-defi">Annual Percentage Yield (APY)</label>
-                            <div class="slider-container">
-                                <input type="range" id="apy-rate-defi" min="3" max="7" value="5" step="0.1">
-                                <div class="slider-value"><span id="apy-display-defi">5.0</span>%</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="results-section">
-                        <h3>Projected Returns (Real-time Compounding, Tax After 1 Year)</h3>
+                    </div>                    <!-- Reinvestment Returns -->
+                    <div id="reinvest-returns" style="display: none;">
+                        <h3>Projected Returns with Automatic Reinvestment</h3>
+                        
+                        <!-- Summary Cards -->
                         <div class="results-grid">
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-clock"></i></div>
-                                <div class="result-content">
-                                    <h4>Daily Compound Growth</h4>
-                                    <p class="result-value" id="daily-compound-defi">€0.00</p>
-                                    <small>Approximate daily increase</small>
-                                    <p class="result-net">Real-time compounding</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-calendar-alt"></i></div>
-                                <div class="result-content">
-                                    <h4>Monthly Growth</h4>
-                                    <p class="result-value" id="monthly-compound-defi">€0.00</p>
-                                    <small>Gross compound growth</small>
-                                    <p class="result-net">No tax applied yet</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card highlight">
-                                <div class="result-icon"><i class="fas fa-chart-line"></i></div>
-                                <div class="result-content">
-                                    <h4>Yearly Total (After Tax)</h4>
-                                    <p class="result-value" id="yearly-total-defi">€0.00</p>
-                                    <small>Total balance after 1 year</small>
-                                    <p class="result-net" id="yearly-breakdown-defi">Principal + Interest</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="calculation-notes">
-                            <h4><i class="fas fa-info-circle"></i> DeFi Wallet Details</h4>
-                            <ul>
-                                <li>Real-time compound interest (continuous compounding)</li>
-                                <li>27.5% tax applied only at year-end on total gains</li>
-                                <li>Higher potential returns due to continuous compounding</li>
-                                <li>Tax efficiency through delayed taxation</li>
-                            </ul>                        </div>
-                    </div>
-                </div>
-
-                <!-- Portfolio Return Calculator Tab -->
-                <div class="tab-content" id="portfolio-return">
-                    <div class="calculator-form">                        <div class="input-group">
-                            <label for="all-world-etf">All World ETF (EUR)</label>
-                            <input type="number" id="all-world-etf" value="1000" min="0" step="100">
-                            <small>Default APY: 7%</small>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="day-money">Day Money (EUR)</label>
-                            <input type="number" id="day-money" value="500" min="0" step="100">
-                            <small>Default APY: 2%</small>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="vsn">VSN (EUR)</label>
-                            <input type="number" id="vsn" value="750" min="0" step="100">
-                            <small>Default APY: 10%</small>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="eurcv">EURCV (EUR)</label>
-                            <input type="number" id="eurcv" value="250" min="0" step="100">
-                            <small>Default APY: 5%</small>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="years-projection">Years to Project</label>
-                            <input type="number" id="years-projection" value="1" min="1" max="50" step="1">
-                            <small>Number of years for projection</small>
-                        </div>
-
-                        <div class="toggle-group">
-                            <label class="toggle-label">
-                                <input type="checkbox" id="apply-tax">
-                                <div class="toggle-slider"></div>
-                                Apply 27.5% Tax
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="results-section">
-                        <h3>Portfolio Projection Results</h3>
-                        <div class="results-grid">
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-globe"></i></div>
-                                <div class="result-content">
-                                    <h4>All World ETF</h4>
-                                    <p class="result-value" id="etf-result">€0.00</p>
-                                    <small>7% APY</small>
-                                    <p class="result-net" id="etf-gains">€0.00 gains</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-piggy-bank"></i></div>
-                                <div class="result-content">
-                                    <h4>Day Money</h4>
-                                    <p class="result-value" id="day-money-result">€0.00</p>
-                                    <small>2% APY</small>
-                                    <p class="result-net" id="day-money-gains">€0.00 gains</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-chart-pie"></i></div>
-                                <div class="result-content">
-                                    <h4>VSN</h4>
-                                    <p class="result-value" id="vsn-result">€0.00</p>
-                                    <small>10% APY</small>
-                                    <p class="result-net" id="vsn-gains">€0.00 gains</p>
-                                </div>
-                            </div>
-
-                            <div class="result-card">
-                                <div class="result-icon"><i class="fas fa-coins"></i></div>
-                                <div class="result-content">
-                                    <h4>EURCV</h4>
-                                    <p class="result-value" id="eurcv-result">€0.00</p>
-                                    <small>5% APY</small>
-                                    <p class="result-net" id="eurcv-gains">€0.00 gains</p>
-                                </div>
-                            </div>
-
                             <div class="result-card highlight">
                                 <div class="result-icon"><i class="fas fa-wallet"></i></div>
                                 <div class="result-content">
-                                    <h4>Total Portfolio Value</h4>
-                                    <p class="result-value" id="total-portfolio">€0.00</p>
-                                    <small>After <span id="years-display">1</span> year(s)</small>
-                                    <p class="result-net" id="total-gains">€0.00 total gains</p>
+                                    <h4>Final Balance After <span id="weeks-display">26</span> Weeks</h4>
+                                    <p class="result-value" id="final-balance">€0.00</p>
+                                    <small>Total invested + compounded returns</small>
+                                    <p class="result-net" id="total-profit">€0.00 total profit after tax</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Growth Comparison -->
+                        <div class="growth-comparison">
+                            <h4><i class="fas fa-chart-bar"></i> Payout Growth Comparison</h4>
+                            <p class="comparison-subtitle">See how your payouts grow over time with compounding</p>
+                            
+                            <div class="comparison-grid">
+                                <!-- Initial Payouts -->
+                                <div class="comparison-section">
+                                    <div class="comparison-header">
+                                        <h5>Initial Payouts</h5>
+                                        <span class="comparison-label">Starting Amount</span>
+                                    </div>
+                                    <div class="payout-bars">
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-calendar-day"></i>
+                                                <span>Bi-Weekly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar" id="initial-biweekly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="initial-biweekly">€0.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>Monthly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar" id="initial-monthly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="initial-monthly">€0.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-chart-line"></i>
+                                                <span>Yearly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar" id="initial-yearly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="initial-yearly">€0.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                <!-- Final Payouts -->
+                                <div class="comparison-section">
+                                    <div class="comparison-header">
+                                        <h5>Final Payouts</h5>
+                                        <span class="comparison-label">After <span id="weeks-display-2">26</span> Weeks</span>
+                                        <span class="overall-growth-badge" id="overall-growth">+0% Growth</span>
+                                    </div>
+                                    <div class="payout-bars">
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-calendar-day"></i>
+                                                <span>Bi-Weekly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar payout-bar-final" id="final-biweekly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="final-biweekly">€0.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <span>Monthly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar payout-bar-final" id="final-monthly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="final-monthly">€0.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="payout-item">
+                                            <div class="payout-label">
+                                                <i class="fas fa-chart-line"></i>
+                                                <span>Yearly</span>
+                                            </div>
+                                            <div class="payout-bar-container">
+                                                <div class="payout-bar payout-bar-final" id="final-yearly-bar" style="width: 0%"></div>
+                                                <span class="payout-amount" id="final-yearly">€0.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="calculation-notes">
-                            <h4><i class="fas fa-info-circle"></i> Portfolio Calculator Details</h4>
+                            <h4><i class="fas fa-info-circle"></i> Calculation Details</h4>
                             <ul>
-                                <li>Compound interest calculated annually for each investment</li>
-                                <li>Tax option applies 27.5% to gains only (not principal)</li>
-                                <li>Default APY rates: All World ETF (7%), Day Money (2%), VSN (10%), EURCV (5%)</li>
-                                <li>Projections assume no additional contributions during the period</li>
+                                <li>Bi-weekly payouts (every 2 weeks)</li>
+                                <li>27.5% tax applied to each payout immediately</li>
+                                <li>Net returns automatically reinvested</li>
+                                <li>Compound interest calculated on growing balance</li>
+                                <li>Each payout increases based on previous reinvestments</li>
                             </ul>
                         </div>
                     </div>
