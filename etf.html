@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF Rechner - Investitionen</title>
+    <link rel="stylesheet" href="theme.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-slate-800 shadow-md border-b border-gray-200 dark:border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-8">
+                    <!-- Back Button -->
+                    <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 group">
+                        <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        <span>Zurück</span>
+                    </a>
+                </div>
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
+                    <svg id="sunIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="moonIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    ETF Rechner
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    Berechne die Entwicklung deines ETF-Investments inkl. Ausschüttungen und Steuern
+                </p>
+            </div>            <!-- Calculator Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700 mb-8">                <!-- Basis-Einstellungen -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Basis-Einstellungen</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Investitionssumme -->
+                        <div>
+                            <label for="investmentAmount" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Investitionssumme
+                            </label>
+                            <div class="relative mb-2">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400">€</span>
+                                <input 
+                                    type="number" 
+                                    id="investmentAmount" 
+                                    value="100000" 
+                                    min="0" 
+                                    step="1000"
+                                    class="w-full pl-8 pr-3 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 dark:text-gray-100"
+                                >
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="setInvestmentAmount(50000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">50k</button>
+                                <button type="button" onclick="setInvestmentAmount(100000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">100k</button>
+                                <button type="button" onclick="setInvestmentAmount(150000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">150k</button>
+                                <button type="button" onclick="setInvestmentAmount(200000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">200k</button>
+                                <button type="button" onclick="setInvestmentAmount(250000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">250k</button>
+                                <button type="button" onclick="setInvestmentAmount(300000)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">300k</button>
+                            </div>
+                        </div>
+
+                        <!-- Investitionsdauer -->
+                        <div>
+                            <label for="yearsInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Investitionsdauer
+                            </label>
+                            <div class="flex items-center gap-2 mb-2">
+                                <input 
+                                    type="number" 
+                                    id="yearsInput" 
+                                    value="10" 
+                                    min="1" 
+                                    max="50" 
+                                    step="1"
+                                    class="w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 dark:text-gray-100"
+                                >
+                                <span class="text-gray-600 dark:text-gray-400 min-w-[3rem]">Jahre</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="setYears(1)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">1J</button>
+                                <button type="button" onclick="setYears(3)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">3J</button>
+                                <button type="button" onclick="setYears(5)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">5J</button>
+                                <button type="button" onclick="setYears(10)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">10J</button>
+                                <button type="button" onclick="setYears(20)" class="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-blue-100 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">20J</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rendite-Einstellungen -->
+                <div class="mb-8 pb-8 border-b border-gray-200 dark:border-slate-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Rendite-Einstellungen</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Jährliche Rendite -->
+                        <div>
+                            <label for="apySlider" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Jährliche Rendite (APY)
+                            </label>
+                            <div class="flex items-center gap-3">
+                                <input 
+                                    type="range" 
+                                    id="apySlider" 
+                                    min="0" 
+                                    max="15" 
+                                    step="0.1" 
+                                    value="7"
+                                    class="w-full h-2 bg-gray-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                                >
+                                <span id="apyValue" class="text-sm font-bold text-blue-600 dark:text-blue-400 min-w-[3.5rem] text-right">7.0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Ausschüttungsrendite -->
+                        <div>
+                            <label for="distApyInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Ausschüttungsrendite
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input 
+                                    type="number" 
+                                    id="distApyInput" 
+                                    value="1.5" 
+                                    min="0" 
+                                    max="10" 
+                                    step="0.1"
+                                    class="w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 dark:text-gray-100"
+                                >
+                                <span class="text-gray-600 dark:text-gray-400 min-w-[3rem]">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategie-Einstellungen -->
+                <div class="mb-8 pb-8 border-b border-gray-200 dark:border-slate-700">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Strategie-Einstellungen</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Entnahmeplan -->
+                        <div>
+                            <label for="withdrawalPercent" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Jährliche Entnahme
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input 
+                                    type="number" 
+                                    id="withdrawalPercent" 
+                                    value="0" 
+                                    min="0" 
+                                    max="100" 
+                                    step="0.1"
+                                    class="w-full px-3 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-800 dark:text-gray-100"
+                                >
+                                <span class="text-gray-600 dark:text-gray-400 min-w-[3rem]">%</span>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">0% = Keine Entnahme</p>
+                        </div>
+
+                        <!-- Reinvest Checkbox -->
+                        <div id="reinvestContainer" class="flex items-center">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" id="reinvestCheckbox" class="cursor-pointer">
+                                <span class="text-sm text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors duration-200">
+                                    Ausschüttungen wieder investieren
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Kapitalentwicklung</h2>
+                    <canvas id="etfChart" height="100"></canvas>
+                </div>
+
+                <!-- Results Grid -->                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 dark:bg-slate-900/50 rounded-lg p-4 border border-blue-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Endkapital nach <span id="yearsLabel">10</span> Jahren</div>
+                        <div id="finalAmount" class="text-2xl font-bold text-blue-600 dark:text-blue-400">€ 0,00</div>
+                    </div>
+
+                    <div id="totalDistBox" class="bg-green-50 dark:bg-slate-900/50 rounded-lg p-4 border border-green-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Gesamt-Ausschüttungen</div>
+                        <div id="totalDist" class="text-2xl font-bold text-green-600 dark:text-green-400">€ 0,00</div>
+                    </div>
+
+                    <div id="withdrawalResultBox" class="bg-purple-50 dark:bg-slate-900/50 rounded-lg p-4 border border-purple-100 dark:border-slate-700 hidden">
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Gesamt-Entnahmen</div>
+                        <div id="totalWithdrawal" class="text-2xl font-bold text-purple-600 dark:text-purple-400">€ 0,00</div>
+                    </div>
+                </div>                <!-- Withdrawal Plan Details -->
+                <div id="withdrawalDetails" class="mt-6 bg-purple-50 dark:bg-slate-900/30 border border-purple-100 dark:border-slate-700 rounded-lg p-4 hidden">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">Entnahmeplan Details</h3>
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Jährliche Entnahme:</span>
+                            <span id="yearlyWithdrawal" class="ml-2 font-semibold text-purple-600 dark:text-purple-400">€ 0,00</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Monatliche Entnahme:</span>
+                            <span id="monthlyWithdrawal" class="ml-2 font-semibold text-purple-600 dark:text-purple-400">€ 0,00</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                        Entnahme-Logik: Zuerst aus Ausschüttungen (nach 27,5% KESt), dann aus Kapital (nach 27,5% Verkaufssteuer)
+                    </p>
+                </div>
+
+                <!-- Detaillierte Jahresübersicht (Dropdown) -->
+                <div class="mt-6">
+                    <button 
+                        id="toggleYearlyDetails" 
+                        onclick="toggleYearlyDetails()"
+                        class="w-full flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-900/70 transition-colors"
+                    >
+                        <span class="font-semibold text-gray-800 dark:text-gray-100">
+                            📊 Detaillierte Jahresübersicht
+                        </span>
+                        <svg id="dropdownIcon" class="w-5 h-5 text-gray-600 dark:text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    
+                    <div id="yearlyDetailsContent" class="hidden mt-4 bg-white dark:bg-slate-900/30 border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">Jahr</th>
+                                        <th class="px-4 py-3 text-right font-semibold text-gray-700 dark:text-gray-300">Kapital Start</th>
+                                        <th class="px-4 py-3 text-right font-semibold text-gray-700 dark:text-gray-300">Ausschüttung</th>
+                                        <th class="px-4 py-3 text-right font-semibold text-gray-700 dark:text-gray-300" id="actionHeader">Reinvestiert</th>
+                                        <th class="px-4 py-3 text-right font-semibold text-gray-700 dark:text-gray-300">Wertsteigerung</th>
+                                        <th class="px-4 py-3 text-right font-semibold text-gray-700 dark:text-gray-300">Kapital Ende</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="yearlyDetailsTable" class="divide-y divide-gray-200 dark:divide-slate-700">
+                                    <!-- Wird dynamisch gefüllt -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="etf.js"></script>
+</body>
+</html>

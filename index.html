@@ -1,112 +1,207 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>    <meta charset="UTF-8">
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clemens Martinek - Software Developer</title>
-    <link rel="stylesheet" href="portfolio-styles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>Clemens Martinek - Startseite</title>
+    <link rel="stylesheet" href="theme.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
 </head>
-<body>
-    <!-- Main Container -->
-    <div class="main-container">
-        
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">                <div class="hero-text">
-                    <div class="intro-line">
-                        <span class="greeting">Hello, I am</span>
+<body>    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-slate-800 shadow-md border-b border-gray-200 dark:border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-8">
+                    <!-- Investitionen Menu -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                            Investitionen
+                            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 py-2">
+                                <a href="stablecoin-lending.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                    </svg>
+                                    <span>Stablecoin Lending</span>
+                                </a>
+                                <a href="etf.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17v-6a4 4 0 014-4h10a4 4 0 014 4v6M16 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                                    </svg>
+                                    <span>ETF Rechner</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <h1 class="name">Clemens Martinek</h1>                    <h2 class="title">Software Developer</h2>
-                    <p class="age-location">
-                        <span id="age-display"></span> • Austria
-                    </p>
-                    <p class="workplace">
-                        Working at FH Wr. Neustadt
-                    </p>
-                    
-                    <div class="description">
-                        <p>Developing scalable web applications with modern technologies.<br>
-                        Focus on clean code and efficient solutions.</p>
+
+                    <!-- Haushalt Menu -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                            Haushalt
+                            <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 py-2">
+                                <a href="verbrauch.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span>Verbrauch</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Tech Stack Visual -->                <div class="tech-showcase">
-                    <div class="tech-category">
-                        <h3>Daily Use</h3>                        <div class="tech-items daily">
-                            <div class="tech-item">
-                                <i class="fab fa-microsoft"></i>
-                                <span>.NET</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fas fa-database"></i>
-                                <span>PostgreSQL</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-js"></i>
-                                <span>JavaScript/jQuery</span>
-                            </div>
-                            <div class="tech-item">
-                                <span class="tailwind-icon">TW</span>
-                                <span>Tailwind CSS</span>
-                            </div>
-                        </div>
-                    </div>
-                      <div class="tech-category">
-                        <h3>Private & Passion</h3>
-                        <div class="tech-items passion">
-                            <div class="tech-item">
-                                <span class="elixir-icon">Ex</span>
-                                <span>Elixir Phoenix</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-docker"></i>
-                                <span>Docker</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tech-category">
-                        <h3>Tools & Workflow</h3>
-                        <div class="tech-items tools">
-                            <div class="tech-item">
-                                <i class="fab fa-jira"></i>
-                                <span>Jira</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-bitbucket"></i>
-                                <span>Bitbucket</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-github"></i>
-                                <span>GitHub</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fab fa-gitlab"></i>
-                                <span>GitLab</span>
-                            </div>
-                            <div class="tech-item">
-                                <i class="fas fa-infinity"></i>
-                                <span>CI/CD</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>            </div>
-        </section>        <!-- Social Links -->
-        <div class="social-section">
-            <div class="social-links">
-                <a href="https://www.linkedin.com/in/clemens-m-958212332/" target="_blank" rel="noopener" class="social-link">
-                    <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
-                </a>
+
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
+                    <svg id="sunIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="moonIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
-        
-        <!-- Hidden Calculator Link -->
-        <a href="calculators.html" class="hidden-calculator-link" title="Financial Tools">
-            <i class="fas fa-calculator"></i>
-        </a></div>
+    </nav>
 
-    <script src="script.js"></script>
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <!-- Hero Section -->
+        <div class="container mx-auto px-4 py-16">
+            <div class="text-center mb-16">
+                <!-- Welcome Text -->
+                <p class="text-xl text-gray-600 dark:text-gray-400 mb-2">Hallo, ich bin</p>
+                <h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    Clemens Martinek
+                </h1>
+                <h2 class="text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
+                    Software-Entwickler
+                </h2>
+                <div class="flex justify-center items-center gap-4 text-lg text-gray-600 dark:text-gray-400 mb-8">
+                    <span id="age">24 Jahre alt</span>
+                    <span class="text-gray-400 dark:text-gray-600">•</span>
+                    <span>Österreich</span>
+                </div>
+                
+                <div class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 mb-12">
+                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    <span class="font-medium text-gray-700 dark:text-gray-300">Tätig bei FH Wr. Neustadt</span>
+                </div>
+
+                <div class="max-w-2xl mx-auto space-y-3 text-lg text-gray-600 dark:text-gray-300">
+                    <p>Entwicklung skalierbarer Webanwendungen mit modernen Technologien.</p>
+                    <p>Fokus auf Clean Code und effiziente Lösungen.</p>
+                </div>
+            </div>
+
+            <!-- Tech Stack Section -->
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-12">Technologien & Werkzeuge</h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Daily Use Card -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Täglicher Einsatz</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">.NET</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-indigo-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">PostgreSQL</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-yellow-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">JavaScript/jQuery</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-cyan-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">Tailwind CSS</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Private & Passion Card -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Privat & Leidenschaft</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-purple-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">Elixir Phoenix</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">Docker</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools & Workflow Card -->
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
+                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Tools & Workflow</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">Jira</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-indigo-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">Bitbucket</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-gray-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">GitHub</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-orange-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">GitLab</span>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+                                <div class="bg-green-500 w-2 h-2 rounded-full"></div>
+                                <span class="font-medium text-gray-700 dark:text-gray-300">CI/CD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
 </body>
 </html>
