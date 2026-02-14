@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verkaufs Simulator - Investitionen</title>
+    <link rel="stylesheet" href="theme.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="bg-white dark:bg-slate-800 shadow-md border-b border-gray-200 dark:border-slate-700">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-8">
+                    <!-- Back Button -->
+                    <a href="index.html" class="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200 group">
+                        <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        <span>Zurück</span>
+                    </a>
+                </div>
+
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
+                    <svg id="sunIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <svg id="moonIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+                    Verkaufs Simulator
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400">
+                    Berechne deinen Nettoerlös nach KESt beim Verkauf von Aktien, ETFs, Kryptos und anderen KESt-pflichtigen Assets
+                </p>
+            </div>
+
+            <!-- Input Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Bestandsdaten</h2>
+                
+                <div class="space-y-6">
+                    <!-- Total Shares Owned -->
+                    <div>
+                        <label for="totalShares" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Gesamte Stückzahl im Besitz
+                        </label>
+                        <input
+                            type="number"
+                            id="totalShares"
+                            min="0"
+                            step="0.01"
+                            placeholder="z.B. 100"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-900 dark:text-gray-100 transition-colors duration-200"
+                        />
+                    </div>
+
+                    <!-- Total Cost -->
+                    <div>
+                        <label for="totalCost" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Gesamtkosten (in €)
+                        </label>
+                        <input
+                            type="number"
+                            id="totalCost"
+                            min="0"
+                            step="0.01"
+                            placeholder="z.B. 5000"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-900 dark:text-gray-100 transition-colors duration-200"
+                        />
+                        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            Gesamtbetrag, den du für alle Stücke bezahlt hast
+                        </p>
+                    </div>
+
+                    <!-- DCA Display -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900/50 dark:to-slate-900/30 rounded-lg p-4 border border-blue-100 dark:border-slate-700">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Durchschnittlicher Kaufpreis (DCA):</span>
+                            <span id="dcaValue" class="text-lg font-bold text-blue-600 dark:text-blue-400">0,00 €</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sell Calculation Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Verkauf berechnen</h2>
+                
+                <!-- Tab Navigation -->
+                <div class="flex gap-2 mb-6 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg">
+                    <button id="tabSell" class="flex-1 px-4 py-2 rounded-md font-medium transition-all duration-200 bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm">
+                        Verkaufen
+                    </button>
+                    <button id="tabKeep" class="flex-1 px-4 py-2 rounded-md font-medium transition-all duration-200 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+                        Behalten
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Shares to Sell (Tab 1) -->
+                    <div id="sellInput">
+                        <label for="sharesToSell" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Stückzahl zum Verkauf
+                        </label>
+                        <input
+                            type="number"
+                            id="sharesToSell"
+                            min="0"
+                            step="0.01"
+                            placeholder="z.B. 50"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-900 dark:text-gray-100 transition-colors duration-200"
+                        />
+                    </div>
+
+                    <!-- Shares to Keep (Tab 2) -->
+                    <div id="keepInput" class="hidden">
+                        <label for="sharesToKeep" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Stückzahl zum Behalten
+                        </label>
+                        <input
+                            type="number"
+                            id="sharesToKeep"
+                            min="0"
+                            step="0.01"
+                            placeholder="z.B. 50"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-900 dark:text-gray-100 transition-colors duration-200"
+                        />
+                        <div class="mt-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-800">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Stückzahl zum Verkauf:</span>
+                                <span id="calculatedSellShares" class="text-lg font-bold text-blue-600 dark:text-blue-400">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sell Price per Share -->
+                    <div>
+                        <label for="sellPrice" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Verkaufspreis pro Stück (in €)
+                        </label>
+                        <input
+                            type="number"
+                            id="sellPrice"
+                            min="0"
+                            step="0.01"
+                            placeholder="z.B. 60"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-900 dark:text-gray-100 transition-colors duration-200"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Ergebnis</h2>
+                
+                <div class="space-y-4">
+                    <!-- Verkaufserlös (brutto) -->
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-slate-700">
+                        <span class="text-gray-700 dark:text-gray-300">Verkaufserlös (brutto):</span>
+                        <span id="grossProceeds" class="text-lg font-semibold text-gray-900 dark:text-gray-100">0,00 €</span>
+                    </div>
+
+                    <!-- Anschaffungskosten -->
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-slate-700">
+                        <span class="text-gray-700 dark:text-gray-300">Anschaffungskosten:</span>
+                        <span id="acquisitionCost" class="text-lg font-semibold text-gray-900 dark:text-gray-100">0,00 €</span>
+                    </div>
+
+                    <!-- Gewinn/Verlust -->
+                    <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-slate-700">
+                        <span class="text-gray-700 dark:text-gray-300">Gewinn/Verlust:</span>
+                        <span id="profitLoss" class="text-lg font-semibold">0,00 €</span>
+                    </div>
+
+                    <!-- KESt (27,5%) -->
+                    <div id="kestRow" class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-slate-700">
+                        <span class="text-gray-700 dark:text-gray-300">KESt (27,5%):</span>
+                        <span id="kestAmount" class="text-lg font-semibold text-red-600 dark:text-red-400">0,00 €</span>
+                    </div>
+
+                    <!-- Nettoerlös -->
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/10 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg font-bold text-gray-800 dark:text-gray-100">Nettoerlös:</span>
+                            <span id="netProceeds" class="text-2xl font-bold text-green-600 dark:text-green-400">0,00 €</span>
+                        </div>
+                    </div>
+
+                    <!-- Remaining Info -->
+                    <div class="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3">
+                                <p class="text-gray-600 dark:text-gray-400 mb-1">Verbleibende Stücke:</p>
+                                <p id="remainingShares" class="text-lg font-semibold text-gray-900 dark:text-gray-100">0</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3">
+                                <p class="text-gray-600 dark:text-gray-400 mb-1">Verbleibender Wert:</p>
+                                <p id="remainingValue" class="text-lg font-semibold text-gray-900 dark:text-gray-100">0,00 €</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                <div class="flex items-start gap-3">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="text-sm text-blue-900 dark:text-blue-100">
+                        <p class="font-semibold mb-1">Hinweis:</p>
+                        <p>Die Kapitalertragsteuer (KESt) von 27,5% wird nur auf Gewinne berechnet. Bei Verlusten fällt keine KESt an.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="verkaufs-simulator.js"></script>
+</body>
+</html>
