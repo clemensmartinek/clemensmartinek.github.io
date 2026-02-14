@@ -54,6 +54,153 @@ function calculateDepotCosts() {
 	document.getElementById("depotYearly").textContent = formatCurrency(yearlyFee);
 
 	calculateDistributionCosts();
+	calculateETFPortfolio();
+}
+
+// Calculate full ETF portfolio projection / costs per year
+function calculateETFPortfolio() {
+	const resultsDiv = document.getElementById("portfolioResults");
+	if (!resultsDiv) return;
+
+	const depotAmount = parseFloat(document.getElementById("depotAmount").value) || 0;
+	const ter = parseFloat(document.getElementById("ter").value) || 0; // percent
+	const dividendYield = parseFloat(document.getElementById("dividendYield").value) || 0; // percent
+	const savingsAmount = parseFloat(document.getElementById("savingsAmount").value) || 0;
+	const savingsFreq = parseInt(document.getElementById("savingsFrequency").value) || 12;
+	const isDistributing = document.getElementById("distributingETF").checked;
+	const distributionFreq = document.getElementById("distributionFrequency").value;
+	const useDevisen = document.getElementById("useDevisenProvision").checked;
+	const reinvest = document.getElementById("reinvestDividends").checked;
+	const chargeReinvestOrders = document.getElementById("chargeOrderOnReinvest") && document.getElementById("chargeOrderOnReinvest").checked;
+	const annualReturn = parseFloat(document.getElementById("annualReturn").value) || 0;
+	const exchange = document.getElementById("exchange") ? document.getElementById("exchange").value : "wien";
+	const foreignCurrency = document.getElementById("foreignCurrency") ? document.getElementById("foreignCurrency").checked : false;
+	const years = parseInt(document.getElementById("years").value) || 1;
+
+	// determine distributions per year
+	let distributionsPerYear = 0;
+	switch (distributionFreq) {
+		case "quarterly":
+			distributionsPerYear = 4;
+			break;
+		case "monthly":
+			distributionsPerYear = 12;
+			break;
+		case "yearly":
+			distributionsPerYear = 1;
+			break;
+	}
+	if (!isDistributing) distributionsPerYear = 0;
+
+	// iterate years
+	let currentDepot = depotAmount;
+	const tbody = document.getElementById("portfolioTableBody");
+	tbody.innerHTML = "";
+
+	let totalCostsAll = 0;
+	let totalCostsFromCash = 0;
+	let totalDividendsNet = 0;
+
+	for (let y = 1; y <= years; y++) {
+		const startDepot = currentDepot;
+		const annualContributions = savingsAmount * savingsFreq;
+
+		// average depot for fee calculations (approximate)
+		const avgDepot = startDepot + annualContributions / 2;
+
+		// gross dividends
+		const annualDivGross = avgDepot * (dividendYield / 100);
+
+		// devisen fees for distributions
+		let totalDevisenFees = 0;
+		if (distributionsPerYear > 0 && useDevisen) {
+			const perDist = annualDivGross / distributionsPerYear;
+			let perFee = 0;
+			if (perDist <= 5500) perFee = 13.89;
+			else perFee = perDist * 0.002; // 0.20%
+			totalDevisenFees = perFee * distributionsPerYear;
+		}
+
+		// KESt on dividends (after devisen fees)
+		const taxable = Math.max(0, annualDivGross - totalDevisenFees);
+		const kest = taxable > 0 ? taxable * 0.275 : 0;
+
+		const annualDivNet = annualDivGross - totalDevisenFees - kest;
+
+		// TER (taken from assets) yearly
+		const terAmount = avgDepot * (ter / 100);
+
+		// Depotgebühren (monthly 0.015% + 20% UST)
+		const monthlyFeeBeforeTax = avgDepot * 0.00015;
+		const monthlyFee = monthlyFeeBeforeTax * 1.2;
+		const yearlyDepotFee = monthlyFee * 12;
+
+		// Orderkosten for savings plan (differ by exchange)
+		const ordersPerYear = savingsFreq;
+		const costPerOrder = orderCostForAmount(savingsAmount, exchange, foreignCurrency);
+		let orderCostsYear = ordersPerYear * costPerOrder;
+
+		// If reinvesting and charging order costs for reinvest, compute reinvest order costs
+		let reinvestOrderCosts = 0;
+		if (reinvest && distributionsPerYear > 0 && chargeReinvestOrders) {
+			const perDistGross = annualDivGross / distributionsPerYear;
+			let perDistDevisen = 0;
+			if (useDevisen) {
+				if (perDistGross <= 5500) perDistDevisen = 13.89;
+				else perDistDevisen = perDistGross * 0.002;
+			}
+			const perDistTaxable = Math.max(0, perDistGross - perDistDevisen);
+			const perDistKest = perDistTaxable > 0 ? perDistTaxable * 0.275 : 0;
+			const perDistNet = perDistGross - perDistDevisen - perDistKest;
+			reinvestOrderCosts = distributionsPerYear * orderCostForAmount(perDistNet, exchange, foreignCurrency);
+			orderCostsYear += reinvestOrderCosts;
+		}
+
+		// Total costs this year
+		const totalCostsYear = terAmount + yearlyDepotFee + orderCostsYear + totalDevisenFees;
+		const costsFromCashYear = yearlyDepotFee + orderCostsYear + totalDevisenFees; // TER not paid from cash
+
+		// end depot value: apply annual return to assets, add reinvested net dividends if chosen, subtract TER
+		const preGrowth = startDepot + annualContributions;
+		const growth = preGrowth * (annualReturn / 100);
+		let endDepot = preGrowth + growth;
+		if (reinvest) endDepot += annualDivNet; // reinvest net dividends
+		// subtract TER from assets (TER lowers asset value)
+		endDepot -= terAmount;
+
+		// append row
+		const tr = document.createElement("tr");
+		tr.innerHTML = `
+			<td class="px-3 py-2">${y}</td>
+			<td class="px-3 py-2">${formatCurrency(startDepot)}</td>
+			<td class="px-3 py-2">${formatCurrency(annualContributions)}</td>
+			<td class="px-3 py-2">${formatCurrency(annualDivGross)}</td>
+			<td class="px-3 py-2">${formatCurrency(totalDevisenFees)}</td>
+			<td class="px-3 py-2">${formatCurrency(kest)}</td>
+			<td class="px-3 py-2">${formatCurrency(annualDivNet)}</td>
+			<td class="px-3 py-2">${(annualReturn).toFixed(2)} %</td>
+			<td class="px-3 py-2">${formatCurrency(growth)}</td>
+			<td class="px-3 py-2">${formatCurrency(terAmount)}</td>
+			<td class="px-3 py-2">${formatCurrency(yearlyDepotFee)}</td>
+			<td class="px-3 py-2">${formatCurrency(orderCostsYear)}</td>
+			<td class="px-3 py-2">${formatCurrency(endDepot)}</td>
+		`;
+		tbody.appendChild(tr);
+
+		// accumulate
+		totalCostsAll += totalCostsYear;
+		totalCostsFromCash += costsFromCashYear;
+		totalDividendsNet += annualDivNet;
+
+		// next year
+		currentDepot = endDepot;
+	}
+
+	// show results
+	resultsDiv.classList.remove("hidden");
+	document.getElementById("totalCostsAll").textContent = formatCurrency(totalCostsAll);
+	document.getElementById("costsFromCash").textContent = formatCurrency(totalCostsFromCash);
+	document.getElementById("totalDividendsNet").textContent = formatCurrency(totalDividendsNet);
 }
 
 // Calculate distribution costs (Devisenprovision)
@@ -163,6 +310,106 @@ function calculateOrderCosts() {
 	updateExampleCosts(exchange);
 }
 
+// Helper: compute order cost for a given amount and exchange
+function orderCostForAmount(amount, exchange, foreignCurrency) {
+	const baseFee = 3.99;
+	const variableFee = amount * 0.0019; // 0.19%
+
+	let exchangeFee = 0;
+	switch (exchange) {
+		case "wien":
+			exchangeFee = Math.max(amount * 0.0002, 1.15);
+			break;
+		case "xetra":
+			exchangeFee = amount * 0.0002;
+			break;
+		case "us":
+			exchangeFee = amount * 0.0001;
+			break;
+		default:
+			exchangeFee = amount * 0.0002;
+	}
+
+	let devisenFee = 0;
+	if (exchange === "us" && foreignCurrency) {
+		if (amount <= 5500) devisenFee = 13.89;
+		else devisenFee = amount * 0.002; // 0.20%
+	}
+
+	return baseFee + variableFee + exchangeFee + devisenFee;
+}
+
+// Order tab switching
+function switchOrderTab(tab) {
+	const overviewBtn = document.getElementById("orderTabOverview");
+	const examplesBtn = document.getElementById("orderTabExamples");
+	const overviewPanel = document.getElementById("orderOverviewPanel");
+	const examplesPanel = document.getElementById("orderExamplesPanel");
+
+	if (tab === "overview") {
+		overviewBtn.classList.add("bg-white", "dark:bg-slate-700", "text-blue-600");
+		overviewBtn.classList.remove("text-gray-700", "dark:text-gray-300");
+		examplesBtn.classList.remove("bg-white", "dark:bg-slate-700", "text-blue-600");
+		examplesBtn.classList.add("text-gray-700", "dark:text-gray-300");
+		overviewPanel.classList.remove("hidden");
+		examplesPanel.classList.add("hidden");
+	} else {
+		examplesBtn.classList.add("bg-white", "dark:bg-slate-700", "text-blue-600");
+		examplesBtn.classList.remove("text-gray-700", "dark:text-gray-300");
+		overviewBtn.classList.remove("bg-white", "dark:bg-slate-700", "text-blue-600");
+		overviewBtn.classList.add("text-gray-700", "dark:text-gray-300");
+		overviewPanel.classList.add("hidden");
+		examplesPanel.classList.remove("hidden");
+	}
+}
+
+// Attach tab listeners (if elements exist)
+if (document.getElementById("orderTabOverview")) {
+	document.getElementById("orderTabOverview").addEventListener("click", () => switchOrderTab("overview"));
+}
+if (document.getElementById("orderTabExamples")) {
+	document.getElementById("orderTabExamples").addEventListener("click", () => switchOrderTab("examples"));
+}
+
+// Initialize order tab default
+switchOrderTab("overview");
+
+// Main tab switching (Depotentwicklung / Ordergebühren)
+function switchMainTab(tab) {
+	const depotBtn = document.getElementById("mainTabDepot");
+	const ordersBtn = document.getElementById("mainTabOrders");
+	const depotSection = document.getElementById("depotSection");
+	const portfolio = document.getElementById("portfolioResults");
+	const orders = document.getElementById("orderCostsSection");
+
+	if (tab === "depot") {
+		depotBtn.classList.add("bg-white", "dark:bg-slate-700", "text-blue-600");
+		depotBtn.classList.remove("text-gray-700", "dark:text-gray-300");
+		ordersBtn.classList.remove("bg-white", "dark:bg-slate-700", "text-blue-600");
+		ordersBtn.classList.add("text-gray-700", "dark:text-gray-300");
+		if (depotSection) depotSection.classList.remove("hidden");
+		if (portfolio) portfolio.classList.remove("hidden");
+		orders.classList.add("hidden");
+	} else {
+		ordersBtn.classList.add("bg-white", "dark:bg-slate-700", "text-blue-600");
+		ordersBtn.classList.remove("text-gray-700", "dark:text-gray-300");
+		depotBtn.classList.remove("bg-white", "dark:bg-slate-700", "text-blue-600");
+		depotBtn.classList.add("text-gray-700", "dark:text-gray-300");
+		if (depotSection) depotSection.classList.add("hidden");
+		if (portfolio) portfolio.classList.add("hidden");
+		orders.classList.remove("hidden");
+	}
+}
+
+// Attach main tab listeners and set default
+if (document.getElementById("mainTabDepot")) {
+	document.getElementById("mainTabDepot").addEventListener("click", () => switchMainTab("depot"));
+}
+if (document.getElementById("mainTabOrders")) {
+	document.getElementById("mainTabOrders").addEventListener("click", () => switchMainTab("orders"));
+}
+switchMainTab("depot");
+
 // Update example costs based on selected exchange
 function updateExampleCosts(exchange) {
 	const exampleCostsDiv = document.getElementById("exampleCosts");
@@ -214,6 +461,26 @@ document.getElementById("distributionFrequency").addEventListener("change", calc
 document.getElementById("orderAmount").addEventListener("input", calculateOrderCosts);
 document.getElementById("exchange").addEventListener("change", calculateOrderCosts);
 document.getElementById("foreignCurrency").addEventListener("change", calculateOrderCosts);
+
+// New listeners for ETF portfolio inputs
+document.getElementById("ter").addEventListener("input", calculateETFPortfolio);
+document.getElementById("dividendYield").addEventListener("input", calculateETFPortfolio);
+document.getElementById("savingsAmount").addEventListener("input", calculateETFPortfolio);
+document.getElementById("savingsFrequency").addEventListener("change", calculateETFPortfolio);
+document.getElementById("useDevisenProvision").addEventListener("change", calculateETFPortfolio);
+document.getElementById("reinvestDividends").addEventListener("change", calculateETFPortfolio);
+document.getElementById("years").addEventListener("input", calculateETFPortfolio);
+
+// additional listeners
+document.getElementById("exchange").addEventListener("change", calculateETFPortfolio);
+document.getElementById("foreignCurrency").addEventListener("change", calculateETFPortfolio);
+document.getElementById("chargeOrderOnReinvest").addEventListener("change", calculateETFPortfolio);
+document.getElementById("annualReturn").addEventListener("input", calculateETFPortfolio);
+document.getElementById("ter").addEventListener("input", calculateETFPortfolio);
+
+// Also refresh portfolio on distribution toggles
+document.getElementById("distributingETF").addEventListener("change", calculateETFPortfolio);
+document.getElementById("distributionFrequency").addEventListener("change", calculateETFPortfolio);
 
 // Initial calculations
 calculateDepotCosts();

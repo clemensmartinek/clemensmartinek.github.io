@@ -22,6 +22,7 @@
                         <span>Zurück</span>
                     </a>
                 </div>
+                
 
                 <!-- Theme Toggle -->
                 <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
@@ -41,51 +42,90 @@
             <!-- Header -->
             <div class="text-center mb-8">
                 <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-                    Broker Kosten Rechner
+                    ETF-Portfolio
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-400">
-                    Berechne die Depotkosten und Ordergebühren für dein Investment
+                    Berechne TER, Depotgebühren, Orderkosten, Devisen- und Ausschüttungs-Effekte über mehrere Jahre
                 </p>
             </div>
 
-            <!-- Depotkosten Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Depotkosten</h2>
+            <!-- Main Tabs: Depotentwicklung / Ordergebühren -->
+            <div class="flex gap-3 mb-6">
+                <button id="mainTabDepot" class="px-4 py-2 rounded-md font-medium bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400">Depotentwicklung</button>
+                <button id="mainTabOrders" class="px-4 py-2 rounded-md font-medium text-gray-700 dark:text-gray-300">Ordergebühren</button>
+            </div>
+
+
+            <!-- Depot Eingaben Card -->
+            <div id="depotSection" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Depot Eingaben</h2>
                 
-                <!-- Investment Amount -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                        Depotsumme
-                    </label>
-                    <input 
-                        type="number" 
-                        id="depotAmount" 
-                        value="100000"
-                        class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-gray-100 text-lg font-medium focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
-                    />
-                    
-                    <!-- Quick Select Badges -->
-                    <div class="flex flex-wrap gap-2 mt-3">
-                        <button onclick="setDepotAmount(100000)" class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                            100k €
-                        </button>
-                        <button onclick="setDepotAmount(250000)" class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                            250k €
-                        </button>
-                        <button onclick="setDepotAmount(500000)" class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                            500k €
-                        </button>
-                        <button onclick="setDepotAmount(750000)" class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                            750k €
-                        </button>
-                        <button onclick="setDepotAmount(1000000)" class="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">
-                            1 Mio. €
-                        </button>
+                <!-- Investment Amount + TER + Dividend + Sparplan -->
+                <div class="mb-6 grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                            Depotsumme
+                        </label>
+                        <input 
+                            type="number" 
+                            id="depotAmount" 
+                            value="100000"
+                            class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-gray-100 text-lg font-medium focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
+                        />
+
+                        <!-- Quick Select Badges in 50k Schritten -->
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button onclick="setDepotAmount(50000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">50k €</button>
+                            <button onclick="setDepotAmount(100000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">100k €</button>
+                            <button onclick="setDepotAmount(150000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">150k €</button>
+                            <button onclick="setDepotAmount(200000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">200k €</button>
+                            <button onclick="setDepotAmount(250000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">250k €</button>
+                            <button onclick="setDepotAmount(300000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">300k €</button>
+                            <button onclick="setDepotAmount(350000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">350k €</button>
+                            <button onclick="setDepotAmount(400000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">400k €</button>
+                            <button onclick="setDepotAmount(450000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">450k €</button>
+                            <button onclick="setDepotAmount(500000)" class="px-3 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-lg font-medium hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-colors duration-200">500k €</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">ETF-Parameter</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">TER (% / Jahr)</label>
+                                <input id="ter" type="number" step="0.01" value="0.19" class="w-full mt-1 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">Dividendenrendite (% / Jahr)</label>
+                                <input id="dividendYield" type="number" step="0.01" value="1.5" class="w-full mt-1 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">Sparplan Betrag (pro Ausführung)</label>
+                                <input id="savingsAmount" type="number" step="0.01" value="1000" class="w-full mt-1 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">Sparplan Frequenz</label>
+                                <select id="savingsFrequency" class="w-full mt-1 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100">
+                                    <option value="12">Monatlich</option>
+                                    <option value="4">Quartalsweise</option>
+                                    <option value="1">Jährlich</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">Jährliche Kursrendite (% / Jahr)</label>
+                                <input id="annualReturn" type="number" step="0.01" value="7" class="w-full mt-1 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">ETF-Rendite (Kurswachstum) hier eingeben — wirkt auf das End-Depot pro Jahr.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Anzahl Jahre</label>
+                    <input id="years" type="number" min="1" value="10" class="w-32 px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                </div>
 
-                <!-- Depot Costs Results -->
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Depot Costs Results (hidden in Eingaben) -->
+                <div class="grid md:grid-cols-2 gap-6 mb-6 hidden">
                     <div class="bg-blue-50 dark:bg-slate-900/50 rounded-lg p-4 border border-blue-100 dark:border-slate-700">
                         <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">Depotgebühr pro Monat</div>
                         <div id="depotMonthly" class="text-2xl font-bold text-gray-800 dark:text-gray-100">0,00 €</div>
@@ -148,12 +188,74 @@
                                 <div id="distributionCount" class="text-2xl font-bold text-gray-800 dark:text-gray-100">0</div>
                             </div>
                         </div>
+                        <div class="mt-4 grid md:grid-cols-3 gap-4">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="reinvestDividends" class="cursor-pointer" checked />
+                                <label for="reinvestDividends" class="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">Ausschüttungen automatisch reinvestieren</label>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="useDevisenProvision" class="cursor-pointer" checked />
+                                <label for="useDevisenProvision" class="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">Devisenprovision anwenden</label>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="chargeOrderOnReinvest" class="cursor-pointer" />
+                                <label for="chargeOrderOnReinvest" class="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">Orderkosten für Reinvestitionen berechnen</label>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ETF Portfolio Yearly Breakdown -->
+            <div id="portfolioResults" class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-slate-700 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">Jahresübersicht ETF-Portfolio</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead>
+                            <tr class="text-xs text-gray-500 uppercase">
+                                <th class="px-3 py-2">Jahr</th>
+                                <th class="px-3 py-2">Start Depot</th>
+                                <th class="px-3 py-2">Einzahlungen</th>
+                                <th class="px-3 py-2">Dividenden (brutto)</th>
+                                <th class="px-3 py-2">Devisen</th>
+                                <th class="px-3 py-2">KESt</th>
+                                <th class="px-3 py-2">Dividenden (netto)</th>
+                                <th class="px-3 py-2">Marktrendite (%)</th>
+                                <th class="px-3 py-2">Wertveränderung</th>
+                                <th class="px-3 py-2">TER</th>
+                                <th class="px-3 py-2">Depotgebühren</th>
+                                <th class="px-3 py-2">Orderkosten</th>
+                                <th class="px-3 py-2">End Depot</th>
+                            </tr>
+                        </thead>
+                        <tbody id="portfolioTableBody" class="text-gray-700 dark:text-gray-100"></tbody>
+                    </table>
+                </div>
+                <div class="mt-4 grid md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamtkosten (inkl. TER)</div>
+                        <div id="totalCostsAll" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Davon aus Verrechnungskonto (ohne TER)</div>
+                        <div id="costsFromCash" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamte Dividenden (netto)</div>
+                        <div id="totalDividendsNet" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
                     </div>
                 </div>
             </div>
 
             <!-- Order Costs Card -->
-            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700">
+            <div id="orderCostsSection" class="hidden bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8 border border-gray-200 dark:border-slate-700">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Ordergebühren</h2>
                 
                 <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -201,8 +303,15 @@
                     </div>
                 </div>
 
-                <!-- Order Cost Results -->
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900/50 dark:to-slate-900/30 rounded-lg p-6 border border-blue-100 dark:border-slate-700">
+                <!-- Order Cost Results (with tabs) -->
+                <div class="mb-4">
+                    <div class="flex gap-2 mb-3 bg-gray-100 dark:bg-slate-900 p-1 rounded-lg w-full max-w-md">
+                        <button id="orderTabOverview" class="flex-1 px-3 py-2 rounded-md font-medium bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400">Aufstellung</button>
+                        <button id="orderTabExamples" class="flex-1 px-3 py-2 rounded-md font-medium text-gray-700 dark:text-gray-300">Beispiele</button>
+                    </div>
+                </div>
+
+                <div id="orderOverviewPanel" class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-900/50 dark:to-slate-900/30 rounded-lg p-6 border border-blue-100 dark:border-slate-700">
                     <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Kostenaufstellung</h3>
                     
                     <div class="space-y-3">
@@ -233,8 +342,7 @@
                     </div>
                 </div>
 
-                <!-- Reference Examples -->
-                <div class="mt-6 bg-gray-50 dark:bg-slate-900/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
+                <div id="orderExamplesPanel" class="hidden mt-6 bg-gray-50 dark:bg-slate-900/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
                     <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Beispielkosten für gewählte Börse:</h4>
                     <div id="exampleCosts" class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-600 dark:text-gray-400">
                     </div>
