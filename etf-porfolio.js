@@ -64,17 +64,16 @@ function calculateETFPortfolio() {
 
 	const depotAmount = parseFloat(document.getElementById("depotAmount").value) || 0;
 	const ter = parseFloat(document.getElementById("ter").value) || 0; // percent
-	const dividendYield = parseFloat(document.getElementById("dividendYield").value) || 0; // percent
 	const savingsAmount = parseFloat(document.getElementById("savingsAmount").value) || 0;
 	const savingsFreq = parseInt(document.getElementById("savingsFrequency").value) || 12;
+	const savingsExchange = document.getElementById("savingsExchange") ? document.getElementById("savingsExchange").value : "wien";
 	const isDistributing = document.getElementById("distributingETF").checked;
+	const dividendYield = isDistributing ? (parseFloat(document.getElementById("dividendYield").value) || 0) : 0; // percent
 	const distributionFreq = document.getElementById("distributionFrequency").value;
 	const useDevisen = document.getElementById("useDevisenProvision").checked;
 	const reinvest = document.getElementById("reinvestDividends").checked;
 	const chargeReinvestOrders = document.getElementById("chargeOrderOnReinvest") && document.getElementById("chargeOrderOnReinvest").checked;
 	const annualReturn = parseFloat(document.getElementById("annualReturn").value) || 0;
-	const exchange = document.getElementById("exchange") ? document.getElementById("exchange").value : "wien";
-	const foreignCurrency = document.getElementById("foreignCurrency") ? document.getElementById("foreignCurrency").checked : false;
 	const years = parseInt(document.getElementById("years").value) || 1;
 
 	// determine distributions per year
@@ -101,8 +100,12 @@ function calculateETFPortfolio() {
 	let totalCostsFromCash = 0;
 	let totalDividendsGross = 0;
 	let totalDividendsNet = 0;
+	let totalTerFees = 0;
 	let totalDepotFees = 0;
 	let totalOrderFees = 0;
+	let totalDevisenFeesAll = 0;
+	let totalGrowth = 0;
+	let totalContributionsAll = 0;
 
 	for (let y = 1; y <= years; y++) {
 		const startDepot = currentDepot;
@@ -140,7 +143,7 @@ function calculateETFPortfolio() {
 
 		// Orderkosten for savings plan (differ by exchange)
 		const ordersPerYear = savingsFreq;
-		const costPerOrder = savingsPlanOrderCostForExecution(savingsAmount, exchange, foreignCurrency);
+		const costPerOrder = savingsPlanOrderCostForExecution(savingsAmount, savingsExchange, false);
 		let orderCostsYear = ordersPerYear * costPerOrder;
 
 		// If reinvesting and charging order costs for reinvest, compute reinvest order costs
@@ -155,7 +158,7 @@ function calculateETFPortfolio() {
 			const perDistTaxable = Math.max(0, perDistGross - perDistDevisen);
 			const perDistKest = perDistTaxable > 0 ? perDistTaxable * 0.275 : 0;
 			const perDistNet = perDistGross - perDistDevisen - perDistKest;
-			reinvestOrderCosts = distributionsPerYear * orderCostForAmount(perDistNet, exchange, foreignCurrency);
+			reinvestOrderCosts = distributionsPerYear * orderCostForAmount(perDistNet, savingsExchange, false);
 			orderCostsYear += reinvestOrderCosts;
 		}
 
@@ -173,11 +176,13 @@ function calculateETFPortfolio() {
 
 		// append row
 		const tr = document.createElement("tr");
+		const growthClass = growth >= 0 ? "text-emerald-600 dark:text-emerald-400 font-semibold" : "text-rose-600 dark:text-rose-400 font-semibold";
+		const growthPrefix = growth >= 0 ? "+" : "";
 		tr.innerHTML = `
 			<td class="px-3 py-2">${y}</td>
 			<td class="px-3 py-2">${formatCurrency(startDepot)}</td>
 			<td class="px-3 py-2">${formatCurrency(annualContributions)}</td>
-			<td class="px-3 py-2">${formatCurrency(growth)}</td>
+			<td class="px-3 py-2 ${growthClass}">${growthPrefix}${formatCurrency(growth)}</td>
 			<td class="px-3 py-2">${formatCurrency(annualDivGross)}</td>
 			<td class="px-3 py-2">${formatCurrency(totalDevisenFees)}</td>
 			<td class="px-3 py-2">${formatCurrency(kest)}</td>
@@ -195,21 +200,42 @@ function calculateETFPortfolio() {
 		totalCostsFromCash += costsFromCashYear;
 		totalDividendsGross += annualDivGross;
 		totalDividendsNet += annualDivNet;
+		totalTerFees += terAmount;
 		totalDepotFees += yearlyDepotFee;
 		totalOrderFees += orderCostsYear;
+		totalDevisenFeesAll += totalDevisenFees;
+		totalGrowth += growth;
+		totalContributionsAll += annualContributions;
 
 		// next year
 		currentDepot = endDepot;
 	}
 
 	// show results
-	resultsDiv.classList.remove("hidden");
+	const orderSection = document.getElementById("orderCostsSection");
+	if (orderSection && !orderSection.classList.contains("hidden")) {
+		resultsDiv.classList.add("hidden");
+	} else {
+		resultsDiv.classList.remove("hidden");
+	}
 	document.getElementById("totalCostsAll").textContent = formatCurrency(totalCostsAll);
 	document.getElementById("costsFromCash").textContent = formatCurrency(totalCostsFromCash);
+	document.getElementById("totalTerFees").textContent = formatCurrency(totalTerFees);
 	document.getElementById("totalDividendsGross").textContent = formatCurrency(totalDividendsGross);
 	document.getElementById("totalDividendsNet").textContent = formatCurrency(totalDividendsNet);
 	document.getElementById("totalDepotFees").textContent = formatCurrency(totalDepotFees);
 	document.getElementById("totalOrderFees").textContent = formatCurrency(totalOrderFees);
+	document.getElementById("totalDevisenFees").textContent = formatCurrency(totalDevisenFeesAll);
+	const growthPrefixTotal = totalGrowth >= 0 ? "+" : "";
+	const growthBase = depotAmount + totalContributionsAll;
+	const growthPct = growthBase > 0 ? (totalGrowth / growthBase) * 100 : 0;
+	const growthAbsEl = document.getElementById("totalGrowthAbsolute");
+	const growthPctEl = document.getElementById("totalGrowthPercent");
+	growthAbsEl.textContent = `${growthPrefixTotal}${formatCurrency(totalGrowth)}`;
+	growthAbsEl.className = totalGrowth >= 0
+		? "text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1"
+		: "text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1";
+	growthPctEl.textContent = `${growthPct.toFixed(2)} % auf investiertes Kapital`;
 	updateSavingsStandardOrderCostHint();
 }
 
@@ -381,11 +407,10 @@ function updateSavingsStandardOrderCostHint() {
 	if (!hint) return;
 
 	const savingsAmount = parseFloat(document.getElementById("savingsAmount").value) || 0;
-	const exchange = document.getElementById("exchange") ? document.getElementById("exchange").value : "wien";
-	const foreignCurrency = document.getElementById("foreignCurrency") ? document.getElementById("foreignCurrency").checked : false;
-	const standardCost = orderCostForAmount(savingsAmount, exchange, foreignCurrency);
+	const savingsExchange = document.getElementById("savingsExchange") ? document.getElementById("savingsExchange").value : "wien";
+	const standardCost = orderCostForAmount(savingsAmount, savingsExchange, false);
 
-	hint.textContent = `Normale Ordergebühr pro Ausführung: ${formatCurrency(standardCost)}`;
+	hint.textContent = `Normale Ordergebühr (${savingsExchange === "wien" ? "Wien" : "Xetra"}) pro Ausführung: ${formatCurrency(standardCost)}`;
 }
 
 // Order tab switching
@@ -516,6 +541,7 @@ document.getElementById("ter").addEventListener("input", calculateETFPortfolio);
 document.getElementById("dividendYield").addEventListener("input", calculateETFPortfolio);
 document.getElementById("savingsAmount").addEventListener("input", calculateETFPortfolio);
 document.getElementById("savingsFrequency").addEventListener("change", calculateETFPortfolio);
+document.getElementById("savingsExchange").addEventListener("change", calculateETFPortfolio);
 document.getElementById("savingsOrderType").addEventListener("change", () => {
 	updateSavingsOrderTypeUI();
 	calculateETFPortfolio();

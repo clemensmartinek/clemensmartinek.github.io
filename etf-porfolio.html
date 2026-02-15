@@ -67,7 +67,7 @@
                         <input
                             type="number"
                             id="depotAmount"
-                            value="100000"
+                            value="50000"
                             class="w-full mt-1 px-4 py-3 bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-gray-100 text-lg font-medium focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
                         />
 
@@ -87,22 +87,18 @@
 
                     <div class="bg-indigo-50 dark:bg-slate-900/50 rounded-xl p-4 border border-indigo-100 dark:border-slate-700">
                         <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">ETF und Laufzeit</h3>
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="space-y-3">
                             <div>
-                                <label class="block min-h-[2.5rem] text-xs text-gray-600 dark:text-gray-400">TER (% / Jahr)</label>
-                                <input id="ter" type="number" step="0.01" value="0.19" class="w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                                <label class="block h-5 mb-1 text-xs leading-5 text-gray-600 dark:text-gray-400 whitespace-nowrap">TER p.a. (%)</label>
+                                <input id="ter" type="number" step="0.01" value="0.19" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
                             </div>
                             <div>
-                                <label class="block min-h-[2.5rem] text-xs text-gray-600 dark:text-gray-400">Dividendenrendite (% / Jahr)</label>
-                                <input id="dividendYield" type="number" step="0.01" value="1.5" class="w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                                <label class="block h-5 mb-1 text-xs leading-5 text-gray-600 dark:text-gray-400 whitespace-nowrap">Kursrendite p.a. (%)</label>
+                                <input id="annualReturn" type="number" step="0.01" value="7" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
                             </div>
                             <div>
-                                <label class="block min-h-[2.5rem] text-xs text-gray-600 dark:text-gray-400">Kursrendite (% / Jahr)</label>
-                                <input id="annualReturn" type="number" step="0.01" value="7" class="w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
-                            </div>
-                            <div>
-                                <label class="block min-h-[2.5rem] text-xs text-gray-600 dark:text-gray-400">Anzahl Jahre</label>
-                                <input id="years" type="number" min="1" value="10" class="w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                                <label class="block h-5 mb-1 text-xs leading-5 text-gray-600 dark:text-gray-400 whitespace-nowrap">Jahre</label>
+                                <input id="years" type="number" min="1" value="10" class="w-full px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
                             </div>
                         </div>
                         <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">Kursrendite wirkt auf das investierte Kapital. TER reduziert den Depotwert jährlich.</p>
@@ -121,6 +117,13 @@
                                     <option value="12">Monatlich</option>
                                     <option value="4">Quartalsweise</option>
                                     <option value="1">Jährlich</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-600 dark:text-gray-400">Sparplan Börse</label>
+                                <select id="savingsExchange" class="w-full mt-1 px-3 py-2 rounded-lg bg-white dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100">
+                                    <option value="wien">Wiener Börse</option>
+                                    <option value="xetra" selected>XETRA</option>
                                 </select>
                             </div>
                             <div>
@@ -183,6 +186,12 @@
                                     <option value="yearly">Jährlich (1x)</option>
                                 </select>
                             </div>
+                            <div>
+                                <label class="block text-xs text-gray-600 dark:text-gray-400 mb-1">Dividendenrendite p.a. (%)</label>
+                                <input id="dividendYield" type="number" step="0.01" value="1.5" class="w-full px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 text-gray-800 dark:text-gray-100" />
+                            </div>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-3">
                             <div class="grid grid-cols-2 gap-2">
                                 <div class="rounded-lg border border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-900/50 px-3 py-2">
                                     <div class="text-[11px] text-gray-500 dark:text-gray-400">Ausschüttungen</div>
@@ -207,7 +216,7 @@
                             </div>
 
                             <div class="flex items-center gap-3">
-                                <input type="checkbox" id="chargeOrderOnReinvest" class="cursor-pointer" />
+                                <input type="checkbox" id="chargeOrderOnReinvest" class="cursor-pointer" checked />
                                 <label for="chargeOrderOnReinvest" class="text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer">Orderkosten für Reinvestitionen</label>
                             </div>
                         </div>
@@ -241,35 +250,27 @@
                         <tbody id="portfolioTableBody" class="text-gray-700 dark:text-gray-100 divide-y divide-gray-100 dark:divide-slate-700"></tbody>
                     </table>
                 </div>
-                <div class="mt-4 grid md:grid-cols-3 gap-4">
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamtkosten (inkl. TER)</div>
-                        <div id="totalCostsAll" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
+                <div class="mt-4 grid lg:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamtkosten über die Laufzeit</div>
+                        <div id="totalCostsAll" class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">0,00 €</div>
+                        <div class="mt-3 space-y-1 text-sm">
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>TER</span><span id="totalTerFees">0,00 €</span></div>
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>Depotgebühren</span><span id="totalDepotFees">0,00 €</span></div>
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>Orderkosten</span><span id="totalOrderFees">0,00 €</span></div>
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>Devisengebühren</span><span id="totalDevisenFees">0,00 €</span></div>
+                            <div class="flex justify-between pt-1 border-t border-gray-200 dark:border-slate-700 text-gray-700 dark:text-gray-300"><span>Aus Verrechnungskonto (ohne TER)</span><span id="costsFromCash">0,00 €</span></div>
+                        </div>
                     </div>
 
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Davon aus Verrechnungskonto (ohne TER)</div>
-                        <div id="costsFromCash" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamte Dividenden (brutto)</div>
-                        <div id="totalDividendsGross" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamte Dividenden (netto)</div>
-                        <div id="totalDividendsNet" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamte Depotgebühren</div>
-                        <div id="totalDepotFees" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
-                    </div>
-
-                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-3 border border-gray-100 dark:border-slate-700">
-                        <div class="text-sm text-gray-600 dark:text-gray-400">Gesamte Orderkosten</div>
-                        <div id="totalOrderFees" class="text-lg font-bold text-gray-900 dark:text-gray-100">0,00 €</div>
+                    <div class="bg-gray-50 dark:bg-slate-900/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Wachstum und Dividenden</div>
+                        <div id="totalGrowthAbsolute" class="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">+0,00 €</div>
+                        <div id="totalGrowthPercent" class="text-sm text-gray-600 dark:text-gray-400">0,00 % auf investiertes Kapital</div>
+                        <div class="mt-3 space-y-1 text-sm">
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>Dividenden brutto</span><span id="totalDividendsGross">0,00 €</span></div>
+                            <div class="flex justify-between text-gray-600 dark:text-gray-400"><span>Dividenden netto</span><span id="totalDividendsNet">0,00 €</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -302,7 +303,7 @@
                             class="w-full px-4 py-3 bg-gray-50 dark:bg-slate-900 border border-gray-300 dark:border-slate-600 rounded-lg text-gray-800 dark:text-gray-100 text-lg font-medium focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                         >
                             <option value="wien">Wiener Börse</option>
-                            <option value="xetra">XETRA</option>
+                            <option value="xetra" selected>XETRA</option>
                             <option value="us">NYSE / NASDAQ</option>
                         </select>
                     </div>
