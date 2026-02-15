@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 /* Light theme (default) */
 :root {
 	--color-bg: #f8fafc;
@@ -8,6 +10,7 @@
 	--color-primary-hover: #1d4ed8;
 	--color-border: #e2e8f0;
 	--color-card: #f1f5f9;
+	--nav-height: 4rem;
 }
 
 /* Dark theme */
@@ -20,6 +23,301 @@
 	--color-primary-hover: #3b82f6;
 	--color-border: #334155;
 	--color-card: #1e293b;
+}
+
+.landing {
+	font-family: "Space Grotesk", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+	background: var(--color-bg);
+	color: var(--color-text);
+}
+
+.landing-nav-row {
+	height: var(--nav-height);
+}
+
+.landing-shell {
+	min-height: calc(100vh - var(--nav-height));
+	min-height: calc(100svh - var(--nav-height));
+	min-height: calc(100dvh - var(--nav-height));
+	position: relative;
+	overflow: hidden;
+	display: flex;
+}
+
+.landing-shell::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(circle at 20% 20%, rgba(251, 191, 36, 0.16), transparent 55%),
+		radial-gradient(circle at 80% 10%, rgba(14, 165, 233, 0.16), transparent 55%),
+		radial-gradient(circle at 80% 80%, rgba(34, 197, 94, 0.12), transparent 55%);
+	z-index: 0;
+}
+
+.dark .landing-shell::before {
+	background:
+		radial-gradient(circle at 18% 18%, rgba(251, 191, 36, 0.12), transparent 55%),
+		radial-gradient(circle at 78% 12%, rgba(56, 189, 248, 0.14), transparent 55%),
+		radial-gradient(circle at 78% 82%, rgba(34, 197, 94, 0.12), transparent 55%);
+}
+
+.landing-orb {
+	position: absolute;
+	border-radius: 999px;
+	filter: blur(10px);
+	opacity: 0.7;
+	z-index: 1;
+}
+
+.landing-orb-a {
+	width: 280px;
+	height: 280px;
+	background: rgba(251, 191, 36, 0.2);
+	top: 10%;
+	left: -60px;
+}
+
+.landing-orb-b {
+	width: 320px;
+	height: 320px;
+	background: rgba(56, 189, 248, 0.2);
+	top: -40px;
+	right: -80px;
+}
+
+.landing-orb-c {
+	width: 220px;
+	height: 220px;
+	background: rgba(34, 197, 94, 0.16);
+	bottom: 8%;
+	right: 18%;
+}
+
+.dark .landing-orb-a {
+	background: rgba(251, 191, 36, 0.18);
+}
+
+.dark .landing-orb-b {
+	background: rgba(56, 189, 248, 0.18);
+}
+
+.dark .landing-orb-c {
+	background: rgba(34, 197, 94, 0.16);
+}
+
+.landing-content {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	padding-top: 4rem;
+	padding-bottom: 4rem;
+}
+
+.landing-grid {
+	display: grid;
+	gap: 3rem;
+	width: 100%;
+}
+
+@media (min-width: 1024px) {
+	.landing-grid {
+		grid-template-columns: 1.05fr 1fr;
+		align-items: center;
+	}
+}
+
+.landing-title {
+	margin-top: 0.6rem;
+	font-size: clamp(2.6rem, 5vw, 4.2rem);
+	line-height: 1;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--color-text);
+}
+
+.landing-role {
+	margin-top: 1rem;
+	font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+	color: var(--color-text-secondary);
+}
+
+.landing-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.4rem 0.9rem;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid rgba(148, 163, 184, 0.35);
+	font-weight: 500;
+}
+
+.dark .landing-pill {
+	background: rgba(15, 23, 42, 0.6);
+	border-color: rgba(148, 163, 184, 0.25);
+}
+
+.landing-stack {
+	background: rgba(255, 255, 255, 0.7);
+	border: 1px solid rgba(148, 163, 184, 0.35);
+	border-radius: 32px;
+	padding: 1.8rem;
+	box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.dark .landing-stack {
+	background: rgba(15, 23, 42, 0.55);
+	border-color: rgba(148, 163, 184, 0.2);
+	box-shadow: 0 20px 40px rgba(15, 23, 42, 0.4);
+}
+
+.landing-stack-header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	margin-bottom: 1.4rem;
+}
+
+.landing-stack-grid {
+	display: grid;
+	gap: 1.2rem;
+}
+
+@media (min-width: 768px) {
+	.landing-stack-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.landing-stack-grid .landing-card:last-child {
+		grid-column: span 2;
+	}
+}
+
+.landing-card {
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid rgba(148, 163, 184, 0.3);
+	border-radius: 20px;
+	padding: 1.2rem;
+	box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+}
+
+.dark .landing-card {
+	background: rgba(30, 41, 59, 0.7);
+	border-color: rgba(148, 163, 184, 0.2);
+}
+
+.landing-icon {
+	width: 44px;
+	height: 44px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 14px;
+	color: #0f172a;
+}
+
+.landing-icon-blue {
+	background: rgba(59, 130, 246, 0.16);
+	color: #1d4ed8;
+}
+
+.landing-icon-rose {
+	background: rgba(244, 63, 94, 0.16);
+	color: #e11d48;
+}
+
+.landing-icon-emerald {
+	background: rgba(16, 185, 129, 0.16);
+	color: #059669;
+}
+
+.dark .landing-icon-blue {
+	background: rgba(59, 130, 246, 0.2);
+	color: #93c5fd;
+}
+
+.dark .landing-icon-rose {
+	background: rgba(244, 63, 94, 0.22);
+	color: #fda4af;
+}
+
+.dark .landing-icon-emerald {
+	background: rgba(16, 185, 129, 0.22);
+	color: #6ee7b7;
+}
+
+.landing-chip {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 0.5rem 0.8rem;
+	border-radius: 12px;
+	background: rgba(148, 163, 184, 0.12);
+	font-weight: 500;
+	color: var(--color-text);
+}
+
+.dark .landing-chip {
+	background: rgba(148, 163, 184, 0.2);
+}
+
+.landing-dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 999px;
+}
+
+.landing-reveal {
+	opacity: 0;
+	transform: translateY(10px);
+	animation: landingFade 0.9s ease forwards;
+}
+
+.landing-reveal-delay {
+	animation-delay: 0.15s;
+}
+
+@keyframes landingFade {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-height: 760px) {
+	:root {
+		--nav-height: 3.5rem;
+	}
+
+	.landing-content {
+		padding-top: 2.5rem;
+		padding-bottom: 2.5rem;
+	}
+
+	.landing-title {
+		font-size: clamp(2.2rem, 4.6vw, 3.4rem);
+	}
+
+	.landing-stack {
+		padding: 1.4rem;
+	}
+}
+
+@media (max-height: 760px) and (min-width: 640px) {
+	.landing-stack-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.landing-stack-grid .landing-card:last-child {
+		grid-column: span 2;
+	}
 }
 
 /* Custom Checkbox Style */

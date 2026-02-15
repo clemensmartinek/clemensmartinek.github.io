@@ -8,14 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="tailwind.config.js"></script>
 </head>
-<body>    <!-- Navigation Bar -->
-    <nav class="bg-white dark:bg-slate-800 shadow-md border-b border-gray-200 dark:border-slate-700">
+<body class="landing">
+    <!-- Navigation Bar -->
+    <nav class="landing-nav sticky top-0 z-50 border-b border-black/5 bg-white/80 shadow-sm backdrop-blur dark:border-white/10 dark:bg-slate-900/80">
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
+            <div class="landing-nav-row flex items-center justify-between">
                 <div class="flex items-center gap-8">
                     <!-- Investitionen Menu -->
                     <div class="relative group">
-                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-300 font-medium transition-colors duration-200">
                             Investitionen
                             <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -24,13 +25,13 @@
                         <!-- Dropdown Menu -->
                         <div class="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 py-2">
-                                <a href="etf-porfolio.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                <a href="etf-porfolio.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-amber-700 dark:hover:text-amber-300 transition-colors duration-200">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
                                     <span>ETF-Portfolio</span>
                                 </a>
-                                <a href="verkaufs-simulator.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                <a href="verkaufs-simulator.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-amber-700 dark:hover:text-amber-300 transition-colors duration-200">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                     </svg>
@@ -42,7 +43,7 @@
 
                     <!-- Haushalt Menu -->
                     <div class="relative group">
-                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors duration-200">
+                        <button class="flex items-center gap-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-300 font-medium transition-colors duration-200">
                             Haushalt
                             <svg class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -51,7 +52,7 @@
                         <!-- Dropdown Menu -->
                         <div class="absolute left-0 mt-2 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                             <div class="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-200 dark:border-slate-700 py-2">
-                                <a href="verbrauch.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                <a href="verbrauch.html" class="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-amber-700 dark:hover:text-amber-300 transition-colors duration-200">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                                     </svg>
@@ -63,7 +64,7 @@
                 </div>
 
                 <!-- Theme Toggle -->
-                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100/80 dark:bg-slate-700/80 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors duration-200">
                     <svg id="sunIcon" class="w-5 h-5 text-gray-800 dark:text-gray-200 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                     </svg>
@@ -75,132 +76,87 @@
         </div>
     </nav>
 
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-        <!-- Hero Section -->
-        <div class="container mx-auto px-4 py-16">
-            <div class="text-center mb-16">
-                <!-- Welcome Text -->
-                <p class="text-xl text-gray-600 dark:text-gray-400 mb-2">Hallo, ich bin</p>
-                <h1 class="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-                    Clemens Martinek
-                </h1>
-                <h2 class="text-3xl font-semibold text-gray-700 dark:text-gray-300 mb-6">
-                    Software-Entwickler
-                </h2>
-                <div class="flex justify-center items-center gap-4 text-lg text-gray-600 dark:text-gray-400 mb-8">
-                    <span id="age">24 Jahre alt</span>
-                    <span class="text-gray-400 dark:text-gray-600">•</span>
-                    <span>Österreich</span>
-                </div>
-                
-                <div class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 rounded-lg shadow-md border border-gray-200 dark:border-slate-700 mb-12">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                    </svg>
-                    <span class="font-medium text-gray-700 dark:text-gray-300">Tätig bei FH Wr. Neustadt</span>
-                </div>
+    <main class="landing-shell">
+        <div class="landing-orb landing-orb-a"></div>
+        <div class="landing-orb landing-orb-b"></div>
+        <div class="landing-orb landing-orb-c"></div>
 
-                <div class="max-w-2xl mx-auto space-y-3 text-lg text-gray-600 dark:text-gray-300">
-                    <p>Entwicklung skalierbarer Webanwendungen mit modernen Technologien.</p>
-                    <p>Fokus auf Clean Code und effiziente Lösungen.</p>
-                </div>
-            </div>
+        <div class="landing-content container mx-auto px-4">
+            <div class="landing-grid">
+                <section class="landing-intro landing-reveal">
+                    <p class="text-sm uppercase tracking-[0.35em] text-amber-700/80 dark:text-amber-300/80">Hallo, ich bin</p>
+                    <h1 class="landing-title">Clemens Martinek</h1>
+                    <p class="landing-role">Software-Entwickler mit Fokus auf skalierbare Webanwendungen</p>
 
-            <!-- Tech Stack Section -->
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-gray-100 mb-12">Technologien & Werkzeuge</h2>
-                
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Daily Use Card -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-lg">
-                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                </svg>
+                    <div class="flex flex-wrap items-center gap-4 text-base text-gray-600 dark:text-gray-300 mt-6">
+                        <span id="age" class="landing-pill">24 Jahre alt</span>
+                        <span class="landing-pill">Österreich</span>
+                        <span class="landing-pill">FH Wr. Neustadt</span>
+                    </div>
+
+                </section>
+
+                <section class="landing-stack landing-reveal landing-reveal-delay">
+                    <div class="landing-stack-header">
+                        <h2 class="text-2xl font-semibold">Technologien & Werkzeuge</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">Aktuelle Tools und Stack-Schwerpunkte.</p>
+                    </div>
+
+                    <div class="landing-stack-grid">
+                        <div class="landing-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="landing-icon landing-icon-blue">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold">Täglicher Einsatz</h3>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Täglicher Einsatz</h3>
+                            <div class="space-y-3">
+                                <div class="landing-chip"><span class="landing-dot bg-sky-500"></span>.NET</div>
+                                <div class="landing-chip"><span class="landing-dot bg-indigo-500"></span>PostgreSQL</div>
+                                <div class="landing-chip"><span class="landing-dot bg-amber-500"></span>JavaScript / jQuery</div>
+                                <div class="landing-chip"><span class="landing-dot bg-cyan-500"></span>Tailwind CSS</div>
+                            </div>
                         </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">.NET</span>
+
+                        <div class="landing-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="landing-icon landing-icon-rose">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold">Privat & Leidenschaft</h3>
                             </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-indigo-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">PostgreSQL</span>
+                            <div class="space-y-3">
+                                <div class="landing-chip"><span class="landing-dot bg-rose-500"></span>Elixir Phoenix</div>
+                                <div class="landing-chip"><span class="landing-dot bg-blue-500"></span>Docker</div>
                             </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-yellow-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">JavaScript/jQuery</span>
+                        </div>
+
+                        <div class="landing-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="landing-icon landing-icon-emerald">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold">Tools & Workflow</h3>
                             </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-cyan-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">Tailwind CSS</span>
+                            <div class="space-y-3">
+                                <div class="landing-chip"><span class="landing-dot bg-blue-500"></span>Jira</div>
+                                <div class="landing-chip"><span class="landing-dot bg-indigo-500"></span>Bitbucket</div>
+                                <div class="landing-chip"><span class="landing-dot bg-slate-500"></span>GitHub / GitLab</div>
+                                <div class="landing-chip"><span class="landing-dot bg-emerald-500"></span>CI/CD</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Private & Passion Card -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-lg">
-                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Privat & Leidenschaft</h3>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-purple-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">Elixir Phoenix</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">Docker</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tools & Workflow Card -->
-                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 border border-gray-100 dark:border-slate-700 hover:shadow-xl transition-shadow duration-300">
-                        <div class="flex items-center gap-3 mb-6">
-                            <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-lg">
-                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Tools & Workflow</h3>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-blue-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">Jira</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-indigo-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">Bitbucket</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-gray-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">GitHub</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-orange-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">GitLab</span>
-                            </div>
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
-                                <div class="bg-green-500 w-2 h-2 rounded-full"></div>
-                                <span class="font-medium text-gray-700 dark:text-gray-300">CI/CD</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
+    </main>
 
     <script src="index.js"></script>
 </body>
