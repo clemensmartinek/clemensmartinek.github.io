@@ -65,12 +65,67 @@ function formatCurrency(value) {
     }).format(value);
 }
 
+const validationFieldIds = ["totalShares", "totalCost", "sharesToSell", "sharesToKeep", "sellPrice"];
+
+function clearValidationState() {
+    validationFieldIds.forEach((fieldId) => {
+        const input = document.getElementById(fieldId);
+        const error = document.getElementById(`${fieldId}Error`);
+        if (!input || !error) return;
+
+        input.classList.remove("border-red-500", "dark:border-red-500");
+        input.classList.add("border-gray-300", "dark:border-slate-600");
+        input.classList.remove("border-red-500", "dark:border-red-500", "ring-2", "ring-red-200", "dark:ring-red-900/50");
+        error.textContent = "";
+        error.classList.add("hidden");
+    });
+}
+
+function setInputError(fieldId, message) {
+    const input = document.getElementById(fieldId);
+    const error = document.getElementById(`${fieldId}Error`);
+    if (!input || !error) return;
+
+    input.classList.remove("border-gray-300", "dark:border-slate-600");
+    input.classList.add("border-red-500", "dark:border-red-500", "ring-2", "ring-red-200", "dark:ring-red-900/50");
+    error.textContent = message;
+    error.classList.remove("hidden");
+}
+
+function parseInputValue(fieldId) {
+    const raw = document.getElementById(fieldId).value.trim();
+    if (raw === "") {
+        return { hasValue: false, value: 0, invalid: false };
+    }
+
+    const parsed = parseFloat(raw);
+    if (Number.isNaN(parsed)) {
+        return { hasValue: true, value: 0, invalid: true };
+    }
+
+    return { hasValue: true, value: parsed, invalid: false };
+}
+
+function resetSaleResults() {
+    document.getElementById("grossProceeds").textContent = formatCurrency(0);
+    document.getElementById("acquisitionCost").textContent = formatCurrency(0);
+    document.getElementById("netProceeds").textContent = formatCurrency(0);
+    document.getElementById("remainingValue").textContent = formatCurrency(0);
+
+    const profitLossElement = document.getElementById("profitLoss");
+    profitLossElement.textContent = formatCurrency(0);
+    profitLossElement.className = "text-lg font-semibold text-gray-900 dark:text-gray-100";
+
+    document.getElementById("kestAmount").textContent = formatCurrency(0);
+    document.getElementById("kestRow").classList.add("hidden");
+}
+
 // Calculate DCA
 function calculateDCA() {
-    const totalShares = parseFloat(document.getElementById("totalShares").value) || 0;
-    const totalCost = parseFloat(document.getElementById("totalCost").value) || 0;
+    const totalShares = parseInputValue("totalShares").value;
+    const totalCost = parseInputValue("totalCost").value;
 
-    if (totalShares <= 0) {
+    if (totalShares <= 0 || totalCost < 0) {
         document.getElementById("dcaValue").textContent = "0,00 €";
         return 0;
     }
@@ -88,34 +143,90 @@ function calculateDCA() {
 
 // Calculate sale
 function calculateSale() {
-    const totalShares = parseFloat(document.getElementById("totalShares").value) || 0;
-    const totalCost = parseFloat(document.getElementById("totalCost").value) || 0;
-    const sellPrice = parseFloat(document.getElementById("sellPrice").value) || 0;
+    clearValidationState();
+
+    const totalSharesInput = parseInputValue("totalShares");
+    const totalCostInput = parseInputValue("totalCost");
+    const sellPriceInput = parseInputValue("sellPrice");
+    const totalShares = totalSharesInput.value;
+    const totalCost = totalCostInput.value;
+    const hasSellPrice = sellPriceInput.hasValue;
+    const sellPrice = hasSellPrice ? sellPriceInput.value : 0;
 
     // Calculate shares to sell based on active tab
     let sharesToSell;
+    let sharesToSellInput;
+    let sharesToKeepInput;
     if (activeTab === "sell") {
-        sharesToSell = parseFloat(document.getElementById("sharesToSell").value) || 0;
+        sharesToSellInput = parseInputValue("sharesToSell");
+        sharesToSell = sharesToSellInput.value;
     } else {
-        const sharesToKeep = parseFloat(document.getElementById("sharesToKeep").value) || 0;
+        sharesToKeepInput = parseInputValue("sharesToKeep");
+        const sharesToKeep = sharesToKeepInput.value;
         sharesToSell = totalShares - sharesToKeep;
         if (sharesToSell < 0) sharesToSell = 0;
         // Update display of calculated shares to sell
         document.getElementById("calculatedSellShares").textContent = sharesToSell.toFixed(2);
     }
 
+    let hasValidationError = false;
+    if (totalSharesInput.invalid || totalShares < 0) {
+        setInputError("totalShares", "Bitte gib eine gültige, nicht negative Stückzahl ein.");
+        hasValidationError = true;
+    }
+
+    if (totalCostInput.invalid || totalCost < 0) {
+        setInputError("totalCost", "Bitte gib gültige, nicht negative Gesamtkosten ein.");
+        hasValidationError = true;
+    }
+
+    if (sellPriceInput.invalid || (hasSellPrice && sellPrice < 0)) {
+        setInputError("sellPrice", "Bitte gib einen gültigen, nicht negativen Verkaufspreis ein.");
+        hasValidationError = true;
+    }
+
+    if (activeTab === "sell" && (sharesToSellInput.invalid || sharesToSell < 0)) {
+        setInputError("sharesToSell", "Bitte gib eine gültige, nicht negative Stückzahl zum Verkauf ein.");
+        hasValidationError = true;
+    }
+
+    if (activeTab === "keep" && (sharesToKeepInput.invalid || sharesToKeepInput.value < 0)) {
+        setInputError("sharesToKeep", "Bitte gib eine gültige, nicht negative Stückzahl zum Behalten ein.");
+        hasValidationError = true;
+    }
+
+    if (hasValidationError) {
+        resetSaleResults();
+        document.getElementById("remainingShares").textContent = "0.00";
+        document.getElementById("remainingBookValue").textContent = formatCurrency(0);
+        document.getElementById("breakEvenPrice").textContent = formatCurrency(0);
+        return;
+    }
+
     // Calculate DCA
     const dca = totalShares > 0 ? totalCost / totalShares : 0;
+    document.getElementById("breakEvenPrice").textContent = formatCurrency(dca);
 
     // Check if selling more than owned
     if (sharesToSell > totalShares) {
         if (activeTab === "sell") {
-            alert("Du kannst nicht mehr Stücke verkaufen als du besitzt!");
-            document.getElementById("sharesToSell").value = totalShares;
+            setInputError("sharesToSell", "Du kannst nicht mehr Stücke verkaufen als du besitzt.");
         } else {
-            alert("Du kannst nicht weniger als 0 Stücke behalten!");
-            document.getElementById("sharesToKeep").value = 0;
+            setInputError("sharesToKeep", "Die Stückzahl zum Behalten darf nicht größer als dein Bestand sein.");
         }
+        resetSaleResults();
+        document.getElementById("remainingShares").textContent = "0.00";
+        document.getElementById("remainingBookValue").textContent = formatCurrency(0);
+        return;
+    }
+
+    const remainingShares = totalShares - sharesToSell;
+    document.getElementById("remainingShares").textContent = remainingShares.toFixed(2);
+    document.getElementById("remainingBookValue").textContent = formatCurrency(remainingShares * dca);
+
+    // Ohne Verkaufspreis keine Verkaufsberechnung durchführen
+    if (!hasSellPrice) {
+        resetSaleResults();
         return;
     }
 
@@ -138,8 +249,7 @@ function calculateSale() {
     const netProceeds = grossProceeds - kestAmount;
 
     // Verbleibende Werte
-    const remainingShares = totalShares - sharesToSell;
-    const remainingValue = remainingShares * dca;
+    const remainingValue = remainingShares * sellPrice;
 
     // Update display
     document.getElementById("grossProceeds").textContent = formatCurrency(grossProceeds);
@@ -166,7 +276,6 @@ function calculateSale() {
     }
 
     document.getElementById("netProceeds").textContent = formatCurrency(netProceeds);
-    document.getElementById("remainingShares").textContent = remainingShares.toFixed(2);
     document.getElementById("remainingValue").textContent = formatCurrency(remainingValue);
 }
 
