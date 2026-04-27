@@ -66,6 +66,7 @@ const openPlanButton = document.getElementById("openPlanButton");
 const statusPill = document.getElementById("statusPill");
 
 const currentPhaseEl = document.getElementById("currentPhase");
+const nextExerciseHintEl = document.getElementById("nextExerciseHint");
 const countdownEl = document.getElementById("countdown");
 const progressBarEl = document.getElementById("progressBar");
 const stepCounterEl = document.getElementById("stepCounter");
@@ -171,6 +172,26 @@ function getTotalTimelineSeconds(steps) {
     return steps.reduce((sum, step) => sum + step.seconds, 0);
 }
 
+function getTotalExerciseSteps(steps) {
+    return steps.filter((step) => step.type === "exercise").length;
+}
+
+function getExerciseStepPosition(stepIndex) {
+    if (stepIndex < 0 || !timeline.length) {
+        return 0;
+    }
+
+    let count = 0;
+    const cappedIndex = Math.min(stepIndex, timeline.length - 1);
+    for (let index = 0; index <= cappedIndex; index += 1) {
+        if (timeline[index].type === "exercise") {
+            count += 1;
+        }
+    }
+
+    return count;
+}
+
 function playBeep() {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextClass) {
@@ -248,20 +269,22 @@ function renderPlan(program, steps) {
 }
 
 function updateProgress() {
-    const totalSteps = timeline.length;
+    const totalExerciseSteps = getTotalExerciseSteps(timeline);
     const currentStep = timeline[currentStepIndex];
 
     if (!currentStep) {
         currentPhaseEl.textContent = "Noch nicht gestartet";
+        nextExerciseHintEl.textContent = "Nächste Übung: -";
         countdownEl.textContent = "00:00";
         progressBarEl.style.width = "0%";
-        stepCounterEl.textContent = `0 / ${totalSteps} Schritte`;
+        stepCounterEl.textContent = `0 / ${totalExerciseSteps} Schritte`;
         return;
     }
 
     currentPhaseEl.textContent = currentStep.label;
+    nextExerciseHintEl.textContent = `Nächste Übung: ${getNextExerciseLabel()}`;
     countdownEl.textContent = formatTime(secondsLeft);
-    stepCounterEl.textContent = `${currentStepIndex + 1} / ${totalSteps} Schritte`;
+    stepCounterEl.textContent = `${getExerciseStepPosition(currentStepIndex)} / ${totalExerciseSteps} Schritte`;
 
     const stepProgress = ((currentStep.seconds - secondsLeft) / currentStep.seconds) * 100;
     progressBarEl.style.width = `${Math.max(0, Math.min(100, stepProgress))}%`;
@@ -276,6 +299,19 @@ function findNearestExerciseIndex(fromIndex, direction) {
         index += direction;
     }
     return -1;
+}
+
+function getNextExerciseLabel() {
+    if (!timeline.length) {
+        return "-";
+    }
+
+    const nextExerciseIndex = findNearestExerciseIndex(currentStepIndex, 1);
+    if (nextExerciseIndex === -1) {
+        return "Keine weitere Übung";
+    }
+
+    return timeline[nextExerciseIndex].label;
 }
 
 function setInputsDisabled(disabled) {
@@ -343,9 +379,11 @@ function advanceStep() {
         hasCompleted = true;
         stopTimer("Fertig", true);
         currentPhaseEl.textContent = "Training abgeschlossen";
+        nextExerciseHintEl.textContent = "Nächste Übung: Keine weitere Übung";
         countdownEl.textContent = "00:00";
         progressBarEl.style.width = "100%";
-        stepCounterEl.textContent = `${timeline.length} / ${timeline.length} Schritte`;
+        const totalExerciseSteps = getTotalExerciseSteps(timeline);
+        stepCounterEl.textContent = `${totalExerciseSteps} / ${totalExerciseSteps} Schritte`;
         return;
     }
 
